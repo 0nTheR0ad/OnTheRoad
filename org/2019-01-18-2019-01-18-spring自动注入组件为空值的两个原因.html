@@ -111,18 +111,18 @@
 
 
 
-  <meta name="description" content="生活在信息大爆炸的时代，既是大幸又是不幸。    人类从未如此容易获取信息。 还记得读初中的时候， 不仅家里没书就连学校的书都很少， 一周只允许学生借阅一本。 在那个对知识如饥似渴的年代， 每次提前还书后不得不把当页借阅记录撕了再借， 毕业的时候大家都归还的是一本光凸凸的借阅证。 而且当年学校藏书之少， 使人对于一本枯燥的推导相对论的书都能手不释卷。 信息匮乏是我们这代农村嗜书娃年少时的最大遗憾">
-<meta name="keywords" content="随笔">
+  <meta name="description" content="前言   最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。">
+<meta name="keywords" content="Spring,翻译">
 <meta property="og:type" content="article">
-<meta property="og:title" content="万事开头难">
-<meta property="og:url" content="http://ontheroad.nosace.cc/org/2018-12-14-2018-12-14-万事开头难.html">
+<meta property="og:title" content="Spring自动注入组件为空值的两个原因">
+<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
 <meta property="og:site_name" content="陌上花开">
-<meta property="og:description" content="生活在信息大爆炸的时代，既是大幸又是不幸。    人类从未如此容易获取信息。 还记得读初中的时候， 不仅家里没书就连学校的书都很少， 一周只允许学生借阅一本。 在那个对知识如饥似渴的年代， 每次提前还书后不得不把当页借阅记录撕了再借， 毕业的时候大家都归还的是一本光凸凸的借阅证。 而且当年学校藏书之少， 使人对于一本枯燥的推导相对论的书都能手不释卷。 信息匮乏是我们这代农村嗜书娃年少时的最大遗憾">
+<meta property="og:description" content="前言   最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-27T08:53:07.511Z">
+<meta property="og:updated_time" content="2019-01-18T09:44:46.122Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="万事开头难">
-<meta name="twitter:description" content="生活在信息大爆炸的时代，既是大幸又是不幸。    人类从未如此容易获取信息。 还记得读初中的时候， 不仅家里没书就连学校的书都很少， 一周只允许学生借阅一本。 在那个对知识如饥似渴的年代， 每次提前还书后不得不把当页借阅记录撕了再借， 毕业的时候大家都归还的是一本光凸凸的借阅证。 而且当年学校藏书之少， 使人对于一本枯燥的推导相对论的书都能手不释卷。 信息匮乏是我们这代农村嗜书娃年少时的最大遗憾">
+<meta name="twitter:title" content="Spring自动注入组件为空值的两个原因">
+<meta name="twitter:description" content="前言   最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2018-12-14-2018-12-14-万事开头难.html">
+  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
 
 
 
@@ -141,7 +141,7 @@
   };
 </script>
 
-  <title>万事开头难 | 陌上花开</title>
+  <title>Spring自动注入组件为空值的两个原因 | 陌上花开</title>
   
 
 
@@ -374,7 +374,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2018-12-14-2018-12-14-万事开头难.html">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Matthew Wong">
@@ -391,7 +391,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">万事开头难
+          <h1 class="post-title" itemprop="name headline">Spring自动注入组件为空值的两个原因
 
               
             
@@ -417,24 +417,12 @@
                 
               
 
-              <time title="创建时间：2018-12-14 00:00:00" itemprop="dateCreated datePublished" datetime="2018-12-14T00:00:00+08:00">2018-12-14</time>
+              <time title="创建时间：2019-01-18 00:00:00 / 修改时间：17:44:46" itemprop="dateCreated datePublished" datetime="2019-01-18T00:00:00+08:00">2019-01-18</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-12-27 16:53:07" itemprop="dateModified" datetime="2018-12-27T16:53:07+08:00">2018-12-27</time>
               
             
           </span>
@@ -451,7 +439,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
 
                 
                 
@@ -466,8 +454,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/org/2018-12-14-2018-12-14-万事开头难.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2018-12-14-2018-12-14-万事开头难.html" itemprop="commentCount"></span>
+                <a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -475,7 +463,7 @@
 
           
           
-             <span id="/org/2018-12-14-2018-12-14-万事开头难.html" class="leancloud_visitors" data-flag-title="万事开头难">
+             <span id="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" class="leancloud_visitors" data-flag-title="Spring自动注入组件为空值的两个原因">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -500,7 +488,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">926</span>
+                <span title="本文字数">2.2k</span>
               
 
               
@@ -514,7 +502,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">1 分钟</span>
+                <span title="阅读时长">2 分钟</span>
               
             </div>
           
@@ -534,95 +522,80 @@
       
 
       
-        <p>
-生活在信息大爆炸的时代，既是大幸又是不幸。
+        
+<div id="outline-container-orgae42040" class="outline-2">
+<h2 id="orgae42040">前言</h2>
+<div class="outline-text-2" id="text-orgae42040">
+<p>
+最近在用 <b>Spring Boot</b> 做个简单的API服务帮助管理线上服务日益庞大的配置项。
+<b>Spring Boot</b> 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。
+然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。
+作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。
+简单记录一下，以免下次又栽跟头。
+本文翻译自Steve Claridge写的<a href="https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/" target="_blank" rel="noopener">Two reasons why your Spring @Autowired component is null</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb51d7d0" class="outline-2">
+<h2 id="orgb51d7d0"><b>Spring</b> 自动注入组件为空值的两个原因</h2>
+<div class="outline-text-2" id="text-orgb51d7d0">
+<p>
+<b>Spring</b> 框架大量应用控制反转(Inversion of Control, <b>IoC</b> )，
+使得开发者注入对象时无需关心作用域、生命周期及数据清理等繁琐事宜。
 </p>
 
 <p>
-人类从未如此容易获取信息。
-还记得读初中的时候，
-不仅家里没书就连学校的书都很少，
-一周只允许学生借阅一本。
-在那个对知识如饥似渴的年代，
-每次提前还书后不得不把当页借阅记录撕了再借，
-毕业的时候大家都归还的是一本光凸凸的借阅证。
-而且当年学校藏书之少，
-使人对于一本枯燥的推导相对论的书都能手不释卷。
-信息匮乏是我们这代农村嗜书娃年少时的最大遗憾。
+使用 <b>Spring</b> 比较常遇到的一种错误是，当你引用已经加了注解@Autowired的类时，发现它竟然是空值。
+为什么 <b>Spring</b> 没有自动帮你注入你的类呢？有两种可能的原因。
 </p>
 
 <p>
 <a id="more"></a>
 </p>
+</div>
 
+<div id="outline-container-org68498ad" class="outline-3">
+<h3 id="org68498ad">手动实例化类</h3>
+<div class="outline-text-3" id="text-org68498ad">
 <p>
-很幸运见证了信息爆炸的今天，
-然而这个世界永远不是一面的，信息爆炸的另一面是
+<b>IoC</b> 就像一个酷酷的小孩，可以不用，但如果要用，那就要都用。
+不要有的地方用注解，有的地方又自己实例化。
+比如下面这个代码片段，会导致MyService中repo为空值，从而在doStuff中抛出NullPointerException。
+不是因为MyRepository本身的注解有任何问题，而是因为MyService my = new MyService()手动实例化MyService导致。
 </p>
-<ol class="org-ol">
-<li>丰富多彩的信息必然鱼目混珠</li>
-<li>有价值的信息容易被噪点湮没</li>
-<li>信息的筛选消耗越来越多时间</li>
-<li>信息太多让人来不及好好思考</li>
-<li>未经深入思考无法内化成知识</li>
-</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyService my = <span class="keyword">new</span> MyService();</span><br><span class="line">    my.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>
-所以总感觉只长见识不长知识。
-信息爆炸是我们这些互联网人扔给世界的双刃剑。
+修复这个问题很简单，如下所示，只需要将MyService也加上注解，使其通过 <b>IoC</b> 注入即可。
 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyService service;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    service.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+</div>
 
-
+<div id="outline-container-org74b84ce" class="outline-3">
+<h3 id="org74b84ce">忘记注解 <b>@COMPONENT</b></h3>
+<div class="outline-text-3" id="text-org74b84ce">
 <p>
-望着笔记本的内容繁复且杂乱，
-许多都是从网上复制粘贴所得，
-估计很难有再回味一遍的勇气。
-需要的时候又经常找不到所要，
-只能一次又一次地依赖谷老师。
-博客虽然过时但不失为好产品，
-写的时候可以总结和整理思路。
-最近在学习Emacs，
-对于其org-mode爱不释手。
-工具这种东西，没有捷径，唯有熟方能生巧。
-写博客的过程刚好可以多实践org-mode，一举两得。
+<b>Spring</b> 通过组件扫描去发现需要注入的类。
+通常是扫描classpath目录，查找所有注解 <b>@Component</b> 的类，将它们标记为可自动注入。
+所以当你忘记注解你想使用的组件，将得到空值NullPointerException。
 </p>
 
-
 <p>
-作为一名半调子全栈工程师，
-涉猎过SSH,Drupal,Vue,Django,Ruby On Rails等WEB框架。
-这些框架用于做记录用的博客有些大材小用。
-折腾过WordPress,Jekyll等动态静态博客解决方案，
-对于本人而言静态解决方案有如下好处
+<b>@Service*， *@Repository</b> 以及 <b>Controller</b> 都是特殊的 <b>@Component</b> ，
+所以需要自动注入的类都需要注解这四个其中之一。
+如下代码将导致空值。
 </p>
-<ol class="org-ol">
-<li>不用数据库，易维护</li>
-<li>不用解析器，速度快</li>
-<li>天然免疫常见WEB攻击，安全性较高</li>
-<li>最最最重要的是不用租用VPS，可以省下好多钱。。。</li>
-</ol>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>
-相对于以前用过的Jekyll，
-个人更偏好没折腾过的Hexo。
-一则对于新鲜事物总是充满好奇，
-二来现在刚好有在使用Node.JS做项目。
+加上 <b>@Component</b> 注解就可以了。
 </p>
-
-
-<p>
-万事开头难，
-不知不觉已经码了不少字，
-应该算是开了个好头吧。
-做好一件事很简单，
-坚持做好一件事很难很难，
-希望这件事不会半途而废。
-</p>
-
-
-<p>
-遥祝大洋彼岸好友生日快乐，
-明年今日再来检阅此地成果！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
 
       
     </div>
@@ -635,6 +608,34 @@
     <div>
       
         
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">Spring自动注入组件为空值的两个原因</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Matthew Wong 的个人博客">Matthew Wong</a></p>
+  <p><span>发布时间:</span>2019年01月18日 - 00:01</p>
+  <p><span>最后更新:</span>2019年01月18日 - 17:01</p>
+  <p><span>原始链接:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" title="Spring自动注入组件为空值的两个原因">http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          icon: "success",
+          showConfirmButton: true
+          });
+    });
+    });
+</script>
+
 
       
     </div>
@@ -663,7 +664,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随笔/" rel="tag"><i class="fa fa-tag"></i> 随笔</a>
+            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          
+            <a href="/tags/翻译/" rel="tag"><i class="fa fa-tag"></i> 翻译</a>
           
         </div>
       
@@ -676,15 +679,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/org/2019-01-03-2019-01-03-读书笔记-201812.html" rel="next" title="读书笔记-201812">
+                <i class="fa fa-chevron-left"></i> 读书笔记-201812
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/org/2018-12-20-2018-12-20-hexo-next主题美化.html" rel="prev" title="Hexo-Next主题美化">
-                Hexo-Next主题美化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -733,8 +736,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -846,6 +858,22 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#orgae42040"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgb51d7d0"><span class="nav-number">2.</span> <span class="nav-text">Spring 自动注入组件为空值的两个原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#org68498ad"><span class="nav-number">2.1.</span> <span class="nav-text">手动实例化类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#org74b84ce"><span class="nav-number">2.2.</span> <span class="nav-text">忘记注解 @COMPONENT</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       

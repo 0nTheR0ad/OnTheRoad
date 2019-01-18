@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ontheroad.nosace.cc/"/>
-  <updated>2019-01-03T05:19:13.279Z</updated>
+  <updated>2019-01-18T09:44:46.122Z</updated>
   <id>http://ontheroad.nosace.cc/</id>
   
   <author>
@@ -15,6 +15,57 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring自动注入组件为空值的两个原因</title>
+    <link href="http://ontheroad.nosace.cc//org/2019-01-18-2019-01-18-spring%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5%E7%BB%84%E4%BB%B6%E4%B8%BA%E7%A9%BA%E5%80%BC%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%8E%9F%E5%9B%A0.html"/>
+    <id>http://ontheroad.nosace.cc//org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html</id>
+    <published>2019-01-17T16:00:00.000Z</published>
+    <updated>2019-01-18T09:44:46.122Z</updated>
+    
+    <content type="html"><![CDATA[<div id="outline-container-orgae42040" class="outline-2"><h2 id="orgae42040">前言</h2><div class="outline-text-2" id="text-orgae42040"><p>最近在用 <b>Spring Boot</b> 做个简单的API服务帮助管理线上服务日益庞大的配置项。<b>Spring Boot</b> 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。简单记录一下，以免下次又栽跟头。本文翻译自Steve Claridge写的<a href="https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/" target="_blank" rel="noopener">Two reasons why your Spring @Autowired component is null</a></p></div></div><div id="outline-container-orgb51d7d0" class="outline-2"><h2 id="orgb51d7d0"><b>Spring</b> 自动注入组件为空值的两个原因</h2><div class="outline-text-2" id="text-orgb51d7d0"><p><b>Spring</b> 框架大量应用控制反转(Inversion of Control, <b>IoC</b> )，使得开发者注入对象时无需关心作用域、生命周期及数据清理等繁琐事宜。</p><p>使用 <b>Spring</b> 比较常遇到的一种错误是，当你引用已经加了注解@Autowired的类时，发现它竟然是空值。为什么 <b>Spring</b> 没有自动帮你注入你的类呢？有两种可能的原因。</p><p><a id="more"></a></p></div><div id="outline-container-org68498ad" class="outline-3"><h3 id="org68498ad">手动实例化类</h3><div class="outline-text-3" id="text-org68498ad"><p><b>IoC</b> 就像一个酷酷的小孩，可以不用，但如果要用，那就要都用。不要有的地方用注解，有的地方又自己实例化。比如下面这个代码片段，会导致MyService中repo为空值，从而在doStuff中抛出NullPointerException。不是因为MyRepository本身的注解有任何问题，而是因为MyService my = new MyService()手动实例化MyService导致。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyService my = <span class="keyword">new</span> MyService();</span><br><span class="line">    my.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>修复这个问题很简单，如下所示，只需要将MyService也加上注解，使其通过 <b>IoC</b> 注入即可。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyService service;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    service.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></div><div id="outline-container-org74b84ce" class="outline-3"><h3 id="org74b84ce">忘记注解 <b>@COMPONENT</b></h3><div class="outline-text-3" id="text-org74b84ce"><p><b>Spring</b> 通过组件扫描去发现需要注入的类。通常是扫描classpath目录，查找所有注解 <b>@Component</b> 的类，将它们标记为可自动注入。所以当你忘记注解你想使用的组件，将得到空值NullPointerException。</p><p><b>@Service*， *@Repository</b> 以及 <b>Controller</b> 都是特殊的 <b>@Component</b> ，所以需要自动注入的类都需要注解这四个其中之一。如下代码将导致空值。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>加上 <b>@Component</b> 注解就可以了。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></div></div>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div id=&quot;outline-container-orgae42040&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;orgae42040&quot;&gt;前言&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-orgae42040&quot;&gt;
+&lt;p&gt;
+最近在用 &lt;b&gt;Spring Boot&lt;/b&gt; 做个简单的API服务帮助管理线上服务日益庞大的配置项。
+&lt;b&gt;Spring Boot&lt;/b&gt; 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。
+然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。
+作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。
+简单记录一下，以免下次又栽跟头。
+本文翻译自Steve Claridge写的&lt;a href=&quot;https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Two reasons why your Spring @Autowired component is null&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-orgb51d7d0&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;orgb51d7d0&quot;&gt;&lt;b&gt;Spring&lt;/b&gt; 自动注入组件为空值的两个原因&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-orgb51d7d0&quot;&gt;
+&lt;p&gt;
+&lt;b&gt;Spring&lt;/b&gt; 框架大量应用控制反转(Inversion of Control, &lt;b&gt;IoC&lt;/b&gt; )，
+使得开发者注入对象时无需关心作用域、生命周期及数据清理等繁琐事宜。
+&lt;/p&gt;
+
+&lt;p&gt;
+使用 &lt;b&gt;Spring&lt;/b&gt; 比较常遇到的一种错误是，当你引用已经加了注解@Autowired的类时，发现它竟然是空值。
+为什么 &lt;b&gt;Spring&lt;/b&gt; 没有自动帮你注入你的类呢？有两种可能的原因。
+&lt;/p&gt;
+
+&lt;p&gt;
+    
+    </summary>
+    
+      <category term="前端" scheme="http://ontheroad.nosace.cc/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="Spring" scheme="http://ontheroad.nosace.cc/tags/Spring/"/>
+    
+      <category term="翻译" scheme="http://ontheroad.nosace.cc/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
   
   <entry>
     <title>读书笔记-201812</title>
