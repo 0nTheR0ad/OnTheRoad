@@ -105,18 +105,18 @@
 
 
 
-  <meta name="description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
-<meta name="keywords" content="Spring,翻译">
+  <meta name="description" content="背景   最近接触了个新名词 PWA ，Progressive Web Apps，感觉有点意思。 若干年前，APP得到工业界学术界的大力追捧，研究WEB多年的老板决定将研究方向转向APP。 他相信APP将是WEB的终极形态，对此我一直不是很认同。 我更倾向于三国演义的开篇语，“天下大势，分久必合，合久必分”。 WEB分化为APP是其在移动端的无能为力所致，只要能解决离线浏览、推送通知等麻烦事，A">
+<meta name="keywords" content="Hexo,Next,PWA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring自动注入组件为空值的两个原因">
-<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+<meta property="og:title" content="博客支持PWA和压缩">
+<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html">
 <meta property="og:site_name" content="陌上花开">
-<meta property="og:description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
+<meta property="og:description" content="背景   最近接触了个新名词 PWA ，Progressive Web Apps，感觉有点意思。 若干年前，APP得到工业界学术界的大力追捧，研究WEB多年的老板决定将研究方向转向APP。 他相信APP将是WEB的终极形态，对此我一直不是很认同。 我更倾向于三国演义的开篇语，“天下大势，分久必合，合久必分”。 WEB分化为APP是其在移动端的无能为力所致，只要能解决离线浏览、推送通知等麻烦事，A">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-20T09:39:27.000Z">
+<meta property="og:updated_time" content="2019-01-20T09:41:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring自动注入组件为空值的两个原因">
-<meta name="twitter:description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
+<meta name="twitter:title" content="博客支持PWA和压缩">
+<meta name="twitter:description" content="背景   最近接触了个新名词 PWA ，Progressive Web Apps，感觉有点意思。 若干年前，APP得到工业界学术界的大力追捧，研究WEB多年的老板决定将研究方向转向APP。 他相信APP将是WEB的终极形态，对此我一直不是很认同。 我更倾向于三国演义的开篇语，“天下大势，分久必合，合久必分”。 WEB分化为APP是其在移动端的无能为力所致，只要能解决离线浏览、推送通知等麻烦事，A">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html">
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>Spring自动注入组件为空值的两个原因 | 陌上花开</title>
+  <title>博客支持PWA和压缩 | 陌上花开</title>
   
 
 
@@ -369,7 +369,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Matthew Wong">
@@ -386,7 +386,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring自动注入组件为空值的两个原因
+          <h1 class="post-title" itemprop="name headline">博客支持PWA和压缩
 
               
             
@@ -412,24 +412,12 @@
                 
               
 
-              <time title="创建时间：2019-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-18T00:00:00+08:00">2019-01-18</time>
+              <time title="创建时间：2019-01-20 00:00:00 / 修改时间：17:41:56" itemprop="dateCreated datePublished" datetime="2019-01-20T00:00:00+08:00">2019-01-20</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-01-20 17:39:27" itemprop="dateModified" datetime="2019-01-20T17:39:27+08:00">2019-01-20</time>
               
             
           </span>
@@ -464,8 +452,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
             
-                <a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" itemprop="commentCount"></span>
+                <a href="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -473,7 +461,7 @@
 
           
           
-            <span id="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" class="leancloud_visitors" data-flag-title="Spring自动注入组件为空值的两个原因">
+            <span id="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html" class="leancloud_visitors" data-flag-title="博客支持PWA和压缩">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -498,7 +486,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.2k</span>
+                <span title="本文字数">4.8k</span>
               
 
               
@@ -512,7 +500,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 分钟</span>
+                <span title="阅读时长">4 分钟</span>
               
             </div>
           
@@ -532,74 +520,121 @@
       
 
       
-        <blockquote>
+        
+<div id="outline-container-org959adc8" class="outline-2">
+<h2 id="org959adc8">背景</h2>
+<div class="outline-text-2" id="text-org959adc8">
 <p>
-最近在用 <b>Spring Boot</b> 做个简单的API服务帮助管理线上服务日益庞大的配置项。
-<b>Spring Boot</b> 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。
-然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。
-作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。
-简单记录一下，以免下次又栽跟头。
-本文翻译自Steve Claridge写的<a href="https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/" target="_blank" rel="noopener">Two reasons why your Spring @Autowired component is null</a>
+最近接触了个新名词 <b>PWA</b> ，Progressive Web Apps，感觉有点意思。
+若干年前，APP得到工业界学术界的大力追捧，研究WEB多年的老板决定将研究方向转向APP。
+他相信APP将是WEB的终极形态，对此我一直不是很认同。
+我更倾向于三国演义的开篇语，“天下大势，分久必合，合久必分”。
+WEB分化为APP是其在移动端的无能为力所致，只要能解决离线浏览、推送通知等麻烦事，APP终将回归WEB大本营。
+而 <b>PWA</b> 有可能是一种解决方案。 <b>PWA</b> 由谷歌提出，通过引入相当于本地代理层的 <b>Service Worker</b> ，实现了结合最好的WEB和最好的原生应用的用户体验，包括且不限于更开放、去中心化、跨平台、可SEO、易分享、可离线、可推送、可安装等。
+众所周知的小程序本质上就是 <b>PWA</b> 的一种实现。
+本着无折腾不码农的原则，在本博客中引入了 <b>PWA</b> ，并且为了更好的用户体验添加了压缩模块。
+</p>
+<blockquote>
+<p>
+本文所有SHELL脚本代码均在博客根目录执行，Hexo版本3.8.0，Next版本6.7.0
 </p>
 </blockquote>
 
-<div id="outline-container-org15c8fdd" class="outline-2">
-<h2 id="org15c8fdd"><b>Spring</b> 自动注入组件为空值的两个原因</h2>
-<div class="outline-text-2" id="text-org15c8fdd">
-<p>
-<b>Spring</b> 框架大量应用控制反转(Inversion of Control, <b>IoC</b> )，
-使得开发者注入对象时无需关心作用域、生命周期及数据清理等繁琐事宜。
-</p>
-
-<p>
-使用 <b>Spring</b> 比较常遇到的一种错误是，当你引用已经加了注解@Autowired的类时，发现它竟然是空值。
-为什么 <b>Spring</b> 没有自动帮你注入你的类呢？有两种可能的原因。
-</p>
 
 <p>
 <a id="more"></a>
 </p>
 </div>
+</div>
 
-<div id="outline-container-orgd92bf8f" class="outline-3">
-<h3 id="orgd92bf8f">手动实例化类</h3>
-<div class="outline-text-3" id="text-orgd92bf8f">
+<div id="outline-container-orgb9ad820" class="outline-2">
+<h2 id="orgb9ad820">支持 <b>PWA</b></h2>
+<div class="outline-text-2" id="text-orgb9ad820">
 <p>
-<b>IoC</b> 就像一个酷酷的小孩，可以不用，但如果要用，那就要都用。
-不要有的地方用注解，有的地方又自己实例化。
-比如下面这个代码片段，会导致MyService中repo为空值，从而在doStuff中抛出NullPointerException。
-不是因为MyRepository本身的注解有任何问题，而是因为MyService my = new MyService()手动实例化MyService导致。
+配置很简单，脚本如下所示，需要注意的几个点是
 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyService my = <span class="keyword">new</span> MyService();</span><br><span class="line">    my.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol class="org-ol">
+<li>所属网站必须已经正确开启HTTPS，猜测是因为 <b>Service Worker</b> 本身容易受到 <b>MITM</b> 攻击</li>
+<li>manifest.json可以在<a href="https://app-manifest.firebaseapp.com/" target="_blank" rel="noopener">Web App Manifest Generator</a>中根据自己需求定制</li>
+<li>icons的src必要与source目录中文件一一对应，否则mainfest.json不会被加载</li>
+<li>判断是否正确支持 <b>PWA</b> 可以通过chrome的插件Lighthouse进行检测</li>
+</ol>
 
-<p>
-修复这个问题很简单，如下所示，只需要将MyService也加上注解，使其通过 <b>IoC</b> 注入即可。
-</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyService service;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    service.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install hexo-offline</span></span><br><span class="line">npm i --save hexo-offline</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config hexo-offline</span></span><br><span class="line">cat &gt;&gt; _config.yml &lt;&lt; END_TEXT</span><br><span class="line">offline:</span><br><span class="line">  maximumFileSizeToCacheInBytes: 5242880</span><br><span class="line">  staticFileGlobs:</span><br><span class="line">  - public/**/*.&#123;js,html,css,png,jpg,gif,svg,eot,ttf,woff,woff2&#125;</span><br><span class="line">  stripPrefix: public</span><br><span class="line">  verbose: <span class="literal">true</span></span><br><span class="line">END_TEXT</span><br><span class="line"></span><br><span class="line"><span class="comment"># Introduce manifest.json</span></span><br><span class="line">cat &gt;&gt; <span class="built_in">source</span>/manifest.json &lt;&lt; END_TEXT</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"OnTheRoad"</span>,</span><br><span class="line">  <span class="string">"short_name"</span>: <span class="string">"OnTheRoad"</span>,</span><br><span class="line">  <span class="string">"theme_color"</span>: <span class="string">"#2196f3"</span>,</span><br><span class="line">  <span class="string">"background_color"</span>: <span class="string">"#2196f3"</span>,</span><br><span class="line">  <span class="string">"display"</span>: <span class="string">"standalone"</span>,</span><br><span class="line">  <span class="string">"scope"</span>: <span class="string">"/"</span>,</span><br><span class="line">  <span class="string">"start_url"</span>: <span class="string">"/"</span>,</span><br><span class="line">  <span class="string">"icons"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"src"</span>: <span class="string">"images/icons/48.png"</span>,</span><br><span class="line">      <span class="string">"sizes"</span>: <span class="string">"48x48"</span>,</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"image/png"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"src"</span>: <span class="string">"images/icons/72.png"</span>,</span><br><span class="line">      <span class="string">"sizes"</span>: <span class="string">"72x72"</span>,</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"image/png"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"src"</span>: <span class="string">"images/icons/96.png"</span>,</span><br><span class="line">      <span class="string">"sizes"</span>: <span class="string">"96x96"</span>,</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"image/png"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"src"</span>: <span class="string">"images/icons/144.png"</span>,</span><br><span class="line">      <span class="string">"sizes"</span>: <span class="string">"144x144"</span>,</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"image/png"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"src"</span>: <span class="string">"images/icons/192.png"</span>,</span><br><span class="line">      <span class="string">"sizes"</span>: <span class="string">"192x192"</span>,</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"image/png"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"src"</span>: <span class="string">"images/icons/512.png"</span>,</span><br><span class="line">      <span class="string">"sizes"</span>: <span class="string">"512x512"</span>,</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"image/png"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"splash_pages"</span>: null</span><br><span class="line">&#125;</span><br><span class="line">END_TEXT</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config manifest</span></span><br><span class="line">cat &gt;&gt; themes/next/layout/_custom/header.swig &lt;&lt; END_TEXT</span><br><span class="line">&lt;link rel=<span class="string">"manifest"</span> href=<span class="string">"/manifest.json"</span>&gt;</span><br><span class="line">END_TEXT</span><br></pre></td></tr></table></figure>
 </div>
 </div>
 
-<div id="outline-container-org04b8c53" class="outline-3">
-<h3 id="org04b8c53">忘记注解 <b>@COMPONENT</b></h3>
-<div class="outline-text-3" id="text-org04b8c53">
+<div id="outline-container-orgad377db" class="outline-2">
+<h2 id="orgad377db">支持压缩</h2>
+<div class="outline-text-2" id="text-orgad377db">
 <p>
-<b>Spring</b> 通过组件扫描去发现需要注入的类。
-通常是扫描classpath目录，查找所有注解 <b>@Component</b> 的类，将它们标记为可自动注入。
-所以当你忘记注解你想使用的组件，将得到空值NullPointerException。
+如下安装相应的包以及简单的JS代码即可实现。
+</p>
+<blockquote>
+<p>
+需要注意安装的gulp版本，本文配置对应的是4.0+。
+一开始没注意这个问题，最后一个task使用了网上广泛使用的3.0配置方式
+gulp.task('default', [
+    'minify-html','minify-css','minify-js', 'minify-images'
+);
 </p>
 
 <p>
-<b>@Service*， *@Repository</b> 以及 <b>Controller</b> 都是特殊的 <b>@Component</b> ，
-所以需要自动注入的类都需要注解这四个其中之一。
-如下代码将导致空值。
+结果会抛出如下异常
 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>
-加上 <b>@Component</b> 注解就可以了。
+assert.js:42
+  throw new errors.AssertionError({
+  ^
 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</div>
+
+<p>
+AssertionError [ERR_ASSERTION]: Task function must be specified
+</p>
+
+<p>
+at Gulp.set [as _setTask] (/home/ww/ontheroad/blog/node_modules/undertaker/lib/set-task.js:10:3)
+</p>
+
+<p>
+at Gulp.task (/home/ww/ontheroad/blog/node_modules/undertaker/lib/task.js:13:8)
+</p>
+
+<p>
+at Object.&lt;anonymous&gt; (/home/ww/ontheroad/blog/gulpfile.js:41:6)
+</p>
+
+<p>
+at Module._compile (module.js:652:30)
+</p>
+
+<p>
+at Object.Module._extensions..js (module.js:663:10)
+</p>
+
+<p>
+at Module.load (module.js:565:32)
+</p>
+
+<p>
+at tryModuleLoad (module.js:505:12)
+</p>
+
+<p>
+at Function.Module._load (module.js:497:3)
+</p>
+
+<p>
+at Module.require (module.js:596:17)
+</p>
+
+<p>
+at require (internal/module.js:11:18)
+</p>
+</blockquote>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install gulp</span></span><br><span class="line">npm install gulp-minify-css gulp-uglify gulp-htmlmin gulp-htmlclean gulp-imagemin gulp --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set up gulp script</span></span><br><span class="line">cat &gt; gulpfile.js &lt;&lt; END_TEXT</span><br><span class="line">var gulp = require(<span class="string">'gulp'</span>);</span><br><span class="line">var minifycss = require(<span class="string">'gulp-minify-css'</span>);</span><br><span class="line">var uglify = require(<span class="string">'gulp-uglify'</span>);</span><br><span class="line">var htmlmin = require(<span class="string">'gulp-htmlmin'</span>);</span><br><span class="line">var htmlclean = require(<span class="string">'gulp-htmlclean'</span>);</span><br><span class="line">var imagemin = require(<span class="string">'gulp-imagemin'</span>);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'minify-html'</span>, <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> gulp.src(<span class="string">'./public/**/*.html'</span>)</span><br><span class="line">    .pipe(htmlclean())</span><br><span class="line">    .pipe(htmlmin(&#123;</span><br><span class="line">         removeComments: <span class="literal">true</span>,</span><br><span class="line">         minifyJS: <span class="literal">true</span>,</span><br><span class="line">         minifyCSS: <span class="literal">true</span>,</span><br><span class="line">         minifyURLs: <span class="literal">true</span>,</span><br><span class="line">    &#125;))</span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./public'</span>))</span><br><span class="line">&#125;);</span><br><span class="line">gulp.task(<span class="string">'minify-css'</span>, <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> gulp.src(<span class="string">'./public/**/*.css'</span>)</span><br><span class="line">        .pipe(minifycss(&#123;</span><br><span class="line">            compatibility: <span class="string">'ie8'</span></span><br><span class="line">        &#125;))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">'./public'</span>));</span><br><span class="line">&#125;);</span><br><span class="line">gulp.task(<span class="string">'minify-js'</span>, <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> gulp.src([<span class="string">'./public/**/.js'</span>,<span class="string">'!./public/js/**/*min.js'</span>])</span><br><span class="line">        .pipe(uglify())</span><br><span class="line">        .pipe(gulp.dest(<span class="string">'./public'</span>));</span><br><span class="line">&#125;);</span><br><span class="line">gulp.task(<span class="string">'minify-images'</span>, <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> gulp.src(<span class="string">'./public/images/**/*.*'</span>)</span><br><span class="line">        .pipe(imagemin(</span><br><span class="line">        [imagemin.gifsicle(&#123;<span class="string">'optimizationLevel'</span>: 3&#125;),</span><br><span class="line">        imagemin.jpegtran(&#123;<span class="string">'progressive'</span>: <span class="literal">true</span>&#125;),</span><br><span class="line">        imagemin.optipng(&#123;<span class="string">'optimizationLevel'</span>: 7&#125;),</span><br><span class="line">        imagemin.svgo()],</span><br><span class="line">        &#123;<span class="string">'verbose'</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">        .pipe(gulp.dest(<span class="string">'./public/images'</span>))</span><br><span class="line">&#125;);</span><br><span class="line">gulp.task(<span class="string">'default'</span>, gulp.parallel(</span><br><span class="line">    <span class="string">'minify-html'</span>,<span class="string">'minify-css'</span>,<span class="string">'minify-js'</span>, <span class="string">'minify-images'</span></span><br><span class="line">));</span><br><span class="line">END_TEXT</span><br><span class="line"></span><br><span class="line"><span class="comment"># Deploy with gulp</span></span><br><span class="line">hexo c &amp;&amp; hexo g &amp;&amp; gulp &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
 </div>
 </div>
 
@@ -619,12 +654,12 @@
 
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">Spring自动注入组件为空值的两个原因</a></p>
+  <p><span>本文标题:</span><a href="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html">博客支持PWA和压缩</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Matthew Wong 的个人博客">Matthew Wong</a></p>
-  <p><span>发布时间:</span>2019年01月18日 - 00:01</p>
+  <p><span>发布时间:</span>2019年01月20日 - 00:01</p>
   <p><span>最后更新:</span>2019年01月20日 - 17:01</p>
-  <p><span>原始链接:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" title="Spring自动注入组件为空值的两个原因">http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" aria-label="复制成功！"></i></span>
+  <p><span>原始链接:</span><a href="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html" title="博客支持PWA和压缩">http://ontheroad.nosace.cc/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -670,9 +705,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+            <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
           
-            <a href="/tags/翻译/" rel="tag"><i class="fa fa-tag"></i> 翻译</a>
+            <a href="/tags/Next/" rel="tag"><i class="fa fa-tag"></i> Next</a>
+          
+            <a href="/tags/PWA/" rel="tag"><i class="fa fa-tag"></i> PWA</a>
           
         </div>
       
@@ -685,8 +722,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/org/2019-01-03-2019-01-03-读书笔记-201812.html" rel="next" title="读书笔记-201812">
-                <i class="fa fa-chevron-left"></i> 读书笔记-201812
+              <a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" rel="next" title="Spring自动注入组件为空值的两个原因">
+                <i class="fa fa-chevron-left"></i> Spring自动注入组件为空值的两个原因
               </a>
             
           </div>
@@ -695,8 +732,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html" rel="prev" title="博客支持PWA和压缩">
-                博客支持PWA和压缩 <i class="fa fa-chevron-right"></i>
+              <a href="/org/2019-02-01-2019-02-01-读书笔记-201901.html" rel="prev" title="读书笔记-201901">
+                读书笔记-201901 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -881,7 +918,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org15c8fdd"><span class="nav-number">1.</span> <span class="nav-text">Spring 自动注入组件为空值的两个原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#orgd92bf8f"><span class="nav-number">1.1.</span> <span class="nav-text">手动实例化类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#org04b8c53"><span class="nav-number">1.2.</span> <span class="nav-text">忘记注解 @COMPONENT</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org959adc8"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgb9ad820"><span class="nav-number">2.</span> <span class="nav-text">支持 PWA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgad377db"><span class="nav-number">3.</span> <span class="nav-text">支持压缩</span></a></li></ol></div>
             
 
           </div>
