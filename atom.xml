@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://ontheroad.nosace.cc/"/>
-  <updated>2019-02-01T07:56:44.302Z</updated>
+  <updated>2019-05-29T09:47:49.063Z</updated>
   <id>http://ontheroad.nosace.cc/</id>
   
   <author>
@@ -15,6 +15,179 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ElasticSearch 同步数据</title>
+    <link href="http://ontheroad.nosace.cc//org/2019-05-29-2019-05-29-es-reindex-api.html"/>
+    <id>http://ontheroad.nosace.cc//org/2019-05-29-2019-05-29-es-reindex-api.html</id>
+    <published>2019-05-28T16:00:00.000Z</published>
+    <updated>2019-05-29T09:47:49.063Z</updated>
+    
+    <content type="html"><![CDATA[<div id="outline-container-org4f3b1ef" class="outline-2"><h2 id="org4f3b1ef">同步方法</h2><div class="outline-text-2" id="text-org4f3b1ef"><ol class="org-ol"><li>通过curl调用 <b>ElasticSearch</b> 的reindex API，优点是简单易用，缺点是同步性能不够快</li><li>通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引</li></ol></div></div><div id="outline-container-orga54a556" class="outline-2"><h2 id="orga54a556">reindex 注意事项</h2><div class="outline-text-2" id="text-orga54a556"><ol class="org-ol"><li>需要源索引中文档开启_source字段</li><li>不会引用源索引的配置，如mapping，shard，replicas等，若有需要应该先创建并设置好目标索引后再调用</li><li>从其它集群reindex数据的话，需要配置reindex.remote.whitelist，如果开启SSL，还需要配置证书等</li></ol><p><a id="more"></a></p></div></div><div id="outline-container-org3cc5d9a" class="outline-2"><h2 id="org3cc5d9a">reindex 接口</h2><div class="outline-text-2" id="text-org3cc5d9a"><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">POST _reindex?slices=5&amp;refresh&amp;wait_for_completion=false</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"source"</span>: &#123;</span><br><span class="line">    <span class="attr">"remote"</span>: &#123;</span><br><span class="line">      <span class="attr">"host"</span>: <span class="string">"http://otherhost:9200"</span>,</span><br><span class="line">      <span class="attr">"username"</span>: <span class="string">"user"</span>,</span><br><span class="line">      <span class="attr">"password"</span>: <span class="string">"pass"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"index"</span>: <span class="string">"old_index_name"</span>,</span><br><span class="line">    <span class="attr">"size"</span>: <span class="string">"10000"</span>,</span><br><span class="line">    <span class="attr">"query"</span>: &#123;</span><br><span class="line">      <span class="attr">"term"</span>: &#123;</span><br><span class="line">        <span class="attr">"field_name"</span>: <span class="string">"field_value"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"dest"</span>: &#123;</span><br><span class="line">    <span class="attr">"index"</span>: <span class="string">"new_index_name"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"script"</span>: &#123;</span><br><span class="line">    <span class="attr">"source"</span>: <span class="string">"ctx._source.tag = ctx._source.remove(\"flag\")"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol class="org-ol"><li>source.slices 可选项，默认值为1，设置为源索引shards个数，并发检索，可以达到最高效率</li><li>source.wait_for_completion 可选项，默认为true，设置为false可以令reindex异步执行，大量数据的同步通常耗时较久</li><li>source.remote 可选项，默认为空，表示只在本地做reindex，主要用于字段重命名，修复异常数据等，配置此项可用于集群间同步数据</li><li>source.index 必须项，源索引名</li><li>source.size 可选项，默认值为1000，一次获取的文档个数，视集群情况调整</li><li>source.query 可选项，默认为空，即reindex源索引所有数据</li><li>dest.index 必须项，目标索引名</li><li>script.source 可选项，默认为空，主要用于数据修改，示例中将flag重命名为tag</li></ol></div></div><div id="outline-container-org8b53ac1" class="outline-2"><h2 id="org8b53ac1">任务进度</h2><div class="outline-text-2" id="text-org8b53ac1"></div><div id="outline-container-org51b912e" class="outline-3"><h3 id="org51b912e">进度查询</h3><div class="outline-text-3" id="text-org51b912e"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET _tasks?detailed=true&amp;actions=*reindex</span><br></pre></td></tr></table></figure></div></div><div id="outline-container-orgf46a918" class="outline-3"><h3 id="orgf46a918">取消任务</h3><div class="outline-text-3" id="text-orgf46a918"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST _tasks/task_id/_cancel</span><br></pre></td></tr></table></figure></div></div></div><div id="outline-container-org9d8a1c8" class="outline-2"><h2 id="org9d8a1c8">DIY同步过程</h2><div class="outline-text-2" id="text-org9d8a1c8"><ol class="org-ol"><li>备份数据</li><li>删除数据(如果同步的是整个索引的数据，只需要把索引从alias中移除即可完成备份与删除)</li><li>从远端拉取数据</li><li>按源索引的shards数并发设置SliceBuilder</li><li>SliceBuilder调用addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)有奇效</li><li>线程中通过scroll接口分页获取一批数据</li><li>获取的数据通过BulkProccessor异步写入本地集群，设置最新分页id，重复6</li><li>最终等待BulkProccessor返回</li></ol></div></div>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div id=&quot;outline-container-org4f3b1ef&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;org4f3b1ef&quot;&gt;同步方法&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-org4f3b1ef&quot;&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;通过curl调用 &lt;b&gt;ElasticSearch&lt;/b&gt; 的reindex API，优点是简单易用，缺点是同步性能不够快&lt;/li&gt;
+&lt;li&gt;通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-orga54a556&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;orga54a556&quot;&gt;reindex 注意事项&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-orga54a556&quot;&gt;
+&lt;ol class=&quot;org-ol&quot;&gt;
+&lt;li&gt;需要源索引中文档开启_source字段&lt;/li&gt;
+&lt;li&gt;不会引用源索引的配置，如mapping，shard，replicas等，若有需要应该先创建并设置好目标索引后再调用&lt;/li&gt;
+&lt;li&gt;从其它集群reindex数据的话，需要配置reindex.remote.whitelist，如果开启SSL，还需要配置证书等&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+    
+    </summary>
+    
+      <category term="大数据" scheme="http://ontheroad.nosace.cc/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+      <category term="ElasticSearch" scheme="http://ontheroad.nosace.cc/tags/ElasticSearch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>读书笔记-201902-03</title>
+    <link href="http://ontheroad.nosace.cc//org/2019-04-02-2019-04-02-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-201902-03.html"/>
+    <id>http://ontheroad.nosace.cc//org/2019-04-02-2019-04-02-读书笔记-201902-03.html</id>
+    <published>2019-04-01T16:00:00.000Z</published>
+    <updated>2019-04-02T14:15:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<div id="outline-container-org1499849" class="outline-2"><h2 id="org1499849">正面管教</h2><div class="outline-text-2" id="text-org1499849"><p>不同于传统的严厉式或者溺爱式管教，书中提倡和善而坚定的鼓励式教育。鼓励并不像很多人相信的那样，是对不良行为的奖励，恰恰相反，鼓励会消除孩子对不良行为的需要。为人父母总是不自觉地替孩子做事，甚至做决定。当看到孩子费劲地爬向玩具时，我们总会不自觉地把玩具拿到孩子面前。但是那样会剥夺他们通过自己的体验来发展出对自己能力的信念的机会。时刻提醒自己，不要替孩子做任何他能做的事。</p><blockquote><p>书摘</p><ul class="org-ul"><li><b>正面管教倡导的是和善而坚定，并且把有价值的社会技能和人生技能教给孩子</b></li><li>和善能抵消过于坚定所造成的所有问题（反叛、抗拒、对自尊的挫伤），而坚定则能抵消过于和善所造成的所有问题（娇纵、操纵父母、被宠坏的小淘气鬼、对自尊的挫伤）</li><li><b>孩子们的察觉能力很强，但解释能力却很差</b></li><li><b>孩子的首要目的是追求归属感和价值感</b></li><li><b>不要替孩子做任何他能做的事，那样会剥夺他们通过自己的体验来发展出对自己能力的信念的机会</b></li><li><b>孩子的行为是以自己认为真实的东西为基础，而不是以事实为基础的</b></li><li>行为不当的孩子是丧失了信心的孩子，他们的不良行为是在让你知道，他们没有感受到归属感和价值感，而且他们对于如何找到归属感和价值感抱有错误的信念</li><li><b>鼓励并不像很多人相信的那样，是对不良行为的奖励。不是的，鼓励会消除孩子对不良行为的需要</b></li><li>只要大人通过反复提醒或者通过替孩子解决问题，而不是和孩子一起解决问题，将本应该由孩子来承担的责任揽过去，孩子就永远也学不会对自己的行为负责</li></ul></blockquote><p><a id="more"></a></p></div></div><div id="outline-container-org932e334" class="outline-2"><h2 id="org932e334">月亮与六便士(毛姆)</h2><div class="outline-text-2" id="text-org932e334"><p>这样的书名很难让人眼前一亮，就像人月神话，单从名字根本看不出是什么方面的书。虽说酒香不怕巷子深，但是一个耳熟能详的名字更容易吸引到人。大概，月亮指的是理想，六便士指的是现实，真不知道没看书内容怎么能看得懂书名。书中主人公为了理想放弃了现实生活中的一切，毅然决然，没有丝毫眷恋，像极了突然顿悟的高僧。看起来有些不尽人情，但并不是每个人都能拥有那样令自己打心底热血沸腾的目标的。大多数人，或为钱，或为权，终其一生，只为谋生，无法看透生活的本质。文明人践行一种奇怪的才智：他们把短暂的生命，浪费在烦琐的事务上。越文明越如此，这是我们这个时代莫大的悲哀。</p><ul class="org-ul"><li>一百多年前，奥斯卡·王尔德写下这样的话：“ <b>我不想谋生。我想生活</b> 。”这简直可以拿来概括《月亮与六便士》这部小说。</li><li>艺术是情感的体现，情之所至，人人都能理解。</li><li>为了使灵魂安宁，一个人每天至少该做两件他不喜欢的事。</li><li>作者应该从写作本身，从思想的宣泄中获得快乐；至于其他，都不必介意，一本书或成功或失败，或赞誉或诋毁，他都应该淡然一笑。</li><li>钟摆来回摆荡，旅程永远循环。</li><li><b>文明人践行一种奇怪的才智：他们把短暂的生命，浪费在烦琐的事务上</b></li><li>也许，这只是我自己的怪诞想法，这些天来一直在心头作祟，我总感觉，大多数人这样度过一生，好像不大对劲儿。</li><li>我承认这种生活的社会价值，我也看到它井然有序的幸福，但是，我的血液里有一种强烈的冲动，渴望一种桀骜不驯的旅程。这样的安逸总让我惊惧。我的心渴望更加惊险的生活。只要我能有所改变-改变和不可预知的冒险，我将踏上嶙峋怪石，哪怕激流险滩。</li><li>我那时还不懂得，人性有多矛盾；我不知道，真诚中有多少虚伪，高尚中有多少卑鄙，或者，邪恶中有多少善良。</li><li><b>感情自有其理，理性难以知晓</b></li><li>为什么你认为美-这世上最宝贵的东西，会像沙滩上的卵石，一个漫不经心的路人，随随便便就能捡到？ <b>美是美妙，是奇异，艺术家唯有通过灵魂的煎熬，才能从宇宙的混沌中创造出美。而当美出现，它并非为了让每个人都认出它自己。要认识它，你必须重复和艺术家一样的奇异之旅。这是一支他唱给你的旋律，要想再次用心聆听，就需要智慧、感觉以及丰富的想象力</b></li><li><b>天才是世上最奇妙的东西。但对天才自己而言，却是很大的负担。我们应该容忍他们，要很有耐心</b></li><li>爱需要有甘愿示弱的态度，保护他人的愿望，尽心竭力、取悦对方的渴望——总之，爱需要无私，或者至少将自私隐藏得了无痕迹；而且爱也需要矜持。</li><li><b>爱让一个人比原来的自己更丰富，同时又更贫乏</b></li><li><b>做自己最想做的事，过自己想过的生活，心平气和，怎么能叫作践自己？</b></li><li><b>一个人往往不是他想成为的那种人，而是他不得不成为的那种人</b></li></ul></div></div><div id="outline-container-orgd69b178" class="outline-2"><h2 id="orgd69b178">思想史：从火到弗洛伊德(彼得•沃森) 以及　中国通史(吕思勉)</h2><div class="outline-text-2" id="text-orgd69b178"><p>厚厚的两本书，都只看了大约20％。两本书分别从思想和文化方面阐述历史。诚然，历史是经济、思想、文化、军事等方面的有机组合。然而，单独从其中一方面论述历史未免有些枯燥。个人更喜欢大秦帝国基于具体历史事件介绍经济思想文化等内容的方式。这两本历史书大约更适合修读这个专业方向的人阅读。</p><ul class="org-ul"><li>首先是真理的王国，追求真理是宗教、科学和哲学所关心的问题。在真理的王国，在理想的情况下，人们意见的一致性是完全的、不由自主的，即在逻辑、数学和演绎意义上是必然的。其次是正确的王国，这是法律、伦理学和政治学关心的问题。在这个王国，意见的一致性多数时候是自愿达成的，人们不需要完全同意，但是为了行之有效仍需要广泛流布。最后是趣味的王国，主要与艺术有关。在这个王国，完全不必达成一致性，甚至不一致往往还饶有意味。</li><li>儒家试图在世间寻求自我完善，而道教总是逃避这个世界，目的是超越人类存在的（有限）条件，以达到不朽和永生</li><li>在东方，神和人的关系更加密切，东方的宗教一般比西方的宗教更倾向于神秘主义。而在西方，渴望成神成圣是亵渎行为。</li><li>第一，希腊人第一个真正理解到，世界是可以被认知的，知识可以通过系统观察而获得，无须借助神的帮助；世界和宇宙运行有自己的秩序，不是我们祖先所想的神话。第二，自然和人事不同，自然的运行根据不变之律，而人事没有这样的定律，而是一种强制或协议之律，可以采取各种形式，具有可变性。</li><li>历史虽是记事之书，我们之所探求，则为理而非事。理是概括众事的，事则只是一事。天下事既没有两件真正相同的，执应付此事的方法，以应付彼事，自然要失败。根据于包含众事之理，以应付事实，就不至于此了。然而理是因事而见的，舍事而求理，无有是处。所以我们求学，不能不顾事实，又不该死记事实。</li><li>人类控制自然的力量进步了，控制自己的力量，却不能与之并进。于是天灾虽澹，而人祸复兴。</li></ul></div></div><div id="outline-container-org65f0ee4" class="outline-2"><h2 id="org65f0ee4">黑天鹅(纳西姆•尼古拉斯•塔勒布)</h2><div class="outline-text-2" id="text-org65f0ee4"><p>又是厚厚的一本书，不过内容很有意思，大大颠覆了正常的认知。比如说，众所周知，进化是物竞天泽，适者生存，然而书中却认为进化不过是一系列侥幸的成功，因为存在幸存者偏见，存在沉默的证据。比如说，我们习惯应用归纳法，事实上反证法更容易接近事实，因为看过再多的白天鹅都不能归纳出天鹅都是白的这个结论，只要遇到一只黑天鹅就能完全否定这个结论。比如说，数学上的大数定律也许并不具有现实意义，尽管理论上很完美。我们都习惯于在现实中应用大数定律把随机事件正态分布化，然而我们都忽视了大数定律的重要前提，独立同分布，这个前提在现实生活中并不常见。类似的完美理论还有泰勒定理，现实中哪来的那么连续可导？事实上，学校知识的简化与反启蒙特性阻碍了人们对现实生活的理解。很有意思的一本书，耳目一新，值得再品。</p><ul class="org-ul"><li>首先，它具有意外性，即它在通常的预期之外，也就是在过去没有任何能够确定它发生的可能性的证据。其次，它会产生极端影响。再次，虽然它具有意外性，但人的本性促使我们在事后为它的发生编造理由，并且使它变得可解释和可预测。</li><li>黑天鹅的逻辑是，你不知道的事比你知道的事更有意义，因为许多黑天鹅事件正是在不可预知的情况下发生和加剧的。</li><li>所有人都知道预防比治疗更重要，但预防只得到很少的奖赏。</li><li>我们可以通过负面例子而不是正面证据接近真相</li><li>知识的核心问题（以及这一章的观点）不存在一种叫做证实性证据的东西。</li><li><b>在一个短暂的时期里经历全部痛苦胜过在很长的时间里分散这些痛苦</b></li><li><b>大量一般的好消息比一个非常好的消息更令人感到幸福</b></li><li><b>进化理论不考虑沉默的证据，进化是一系列侥幸的成功</b></li><li>我们活下来了，因为卡萨诺瓦式的温馨情境出现了，如果这看上去太难以理解，那是因为我们被因果观念洗脑了，而且我们以为说“因为”比接受随机性看上去更聪明。</li><li>请非常谨慎地使用“所以”，努力只在由实验而非事后分析得出结论时才使用这个词。</li><li><b>学校知识的简化与反启蒙特性阻碍了人们对现实生活的理解</b></li><li>我们为已经发生的事担忧，而不是为那些可能发生却实际上没有发生的事。</li><li>在预测未来的过程中，你所模型化的过程需要越来越精确，因为你的错误率会迅速上升。而仅仅达到近似的精确是不行的，因为你的预测会突然失效，最终需要对过去进行无穷精确的解释。</li><li><b>随机性最终只是反知识。世界隐藏在迷雾中，而表象在愚弄我们</b></li><li><b>做决策时，你只需要了解事件的影响（这是你能知道的），不需要了解事件的可能性（这是你不可能知道的），这一思想就是不确定性的核心思想</b></li><li>最终推动我们的是历史，而我们却一直以为我们自己才是推动力。</li><li>这是不具突破性的随机性分析框架的关键特征：出现极端离差的可能性以加速度下降。</li><li><b>减轻现实生活中黑天鹅影响的方法</b><ul class="org-ul"><li>尊重时间和非说明性知识。</li><li>避免优化， 学会喜欢冗余 。历久而存的事情更为可取——它们更容易达到遍历状态。但无论如何，我们都难以知晓它们能坚持到何时。</li><li>避免低可能性盈利的预测，尽管对一般盈利没有必要。</li><li>小心远期事件的“非典型性”。</li><li>避免风险尺度。</li><li>注意红利发放的道德风险。</li><li>正面还是负面的黑天鹅？</li><li>不要将挥发性缺失与风险缺失混为一谈。</li><li>小心风险数字的表现。</li></ul></li><li>黑天鹅强势社会中的十项原则<ul class="org-ul"><li>脆弱的事物在其初始阶段便会失败。</li><li>不存在损失的社会化和收获的私人化。</li><li>蒙面驾驶校车（并将其撞坏）的人不应当再被给予开校车的机会。</li><li>不要让一个从事“激励”红利的人掌管一座核电站或者掌握你的金融风险。</li><li>用简洁性弥补复杂性。</li><li>不要将炸药给孩子玩，即便炸药上带有警告标志。</li><li>只有庞氏骗局才能够依靠信心，政府从来不需要“重拾信心”。</li><li>在吸毒上瘾者戒毒痛苦万分时，千万不要给他更多的毒品。</li><li>市民不应将金融资产看做一种保值手段而对其大加依赖，也不应当依赖于那些漏洞百出的专家们的“建议”。</li><li>用打碎的鸡蛋做蛋卷。</li></ul></li><li>所有可能被剥夺的东西都不值得他留恋。</li><li>世界是由极端、未知和非常不可能发生的事物主导的，那就意味着，我们习以为常的作出决定的方式，其实是对生命的很大浪费</li></ul></div></div>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div id=&quot;outline-container-org1499849&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;org1499849&quot;&gt;正面管教&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-org1499849&quot;&gt;
+&lt;p&gt;
+不同于传统的严厉式或者溺爱式管教，书中提倡和善而坚定的鼓励式教育。
+鼓励并不像很多人相信的那样，是对不良行为的奖励，恰恰相反，鼓励会消除孩子对不良行为的需要。
+为人父母总是不自觉地替孩子做事，甚至做决定。
+当看到孩子费劲地爬向玩具时，我们总会不自觉地把玩具拿到孩子面前。
+但是那样会剥夺他们通过自己的体验来发展出对自己能力的信念的机会。
+时刻提醒自己，不要替孩子做任何他能做的事。
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;
+书摘
+&lt;/p&gt;
+&lt;ul class=&quot;org-ul&quot;&gt;
+&lt;li&gt;&lt;b&gt;正面管教倡导的是和善而坚定，并且把有价值的社会技能和人生技能教给孩子&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;和善能抵消过于坚定所造成的所有问题（反叛、抗拒、对自尊的挫伤），而坚定则能抵消过于和善所造成的所有问题（娇纵、操纵父母、被宠坏的小淘气鬼、对自尊的挫伤）&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;孩子们的察觉能力很强，但解释能力却很差&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;孩子的首要目的是追求归属感和价值感&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;不要替孩子做任何他能做的事，那样会剥夺他们通过自己的体验来发展出对自己能力的信念的机会&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;孩子的行为是以自己认为真实的东西为基础，而不是以事实为基础的&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;行为不当的孩子是丧失了信心的孩子，他们的不良行为是在让你知道，他们没有感受到归属感和价值感，而且他们对于如何找到归属感和价值感抱有错误的信念&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;鼓励并不像很多人相信的那样，是对不良行为的奖励。不是的，鼓励会消除孩子对不良行为的需要&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;只要大人通过反复提醒或者通过替孩子解决问题，而不是和孩子一起解决问题，将本应该由孩子来承担的责任揽过去，孩子就永远也学不会对自己的行为负责&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+    
+    </summary>
+    
+      <category term="笔记" scheme="http://ontheroad.nosace.cc/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="教育" scheme="http://ontheroad.nosace.cc/tags/%E6%95%99%E8%82%B2/"/>
+    
+      <category term="小说" scheme="http://ontheroad.nosace.cc/tags/%E5%B0%8F%E8%AF%B4/"/>
+    
+      <category term="思想" scheme="http://ontheroad.nosace.cc/tags/%E6%80%9D%E6%83%B3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ELK踩坑记</title>
+    <link href="http://ontheroad.nosace.cc//org/2019-02-03-2019-02-02-elk%E8%B8%A9%E5%9D%91%E8%AE%B0.html"/>
+    <id>http://ontheroad.nosace.cc//org/2019-02-03-2019-02-02-elk踩坑记.html</id>
+    <published>2019-02-02T16:00:00.000Z</published>
+    <updated>2019-02-13T06:05:48.418Z</updated>
+    
+    <content type="html"><![CDATA[<div id="outline-container-org5194364" class="outline-2"><h2 id="org5194364">前言</h2><div class="outline-text-2" id="text-org5194364"><p>最近关于ELK(<b>ElasticSearch</b> <b>Kibana</b> <b>Logstash</b>)的需求比较多，需求最能推动研发。随着需求的增加，踩了不少坑，统一在此记录一下，免得之后没用又忘。目前实现每台每天大约25亿行WEB日志单备份写入，关闭SSL大约可再提高30%至50%。但是启用x-pack后，默认不允许关闭SSL。暂时没找到只在外部写入时使用SSL，内部节点通信关闭SSL的方法。</p></div></div><div id="outline-container-org8fe5ee6" class="outline-2"><h2 id="org8fe5ee6">BulkRequestBuilder VS BulkProcessor</h2><div class="outline-text-2" id="text-org8fe5ee6"><p>对于大部分应用场景，BulkProcessor足够好用，纯异步处理机制，也是ES官方推荐的批量索引方式。然而BulkProcessor有个小问题，写入失败时只能在子线程中处理，无法抛出异常给主线程。正如官方开发人员javanna在<a href="https://github.com/elastic/elasticsearch/issues/3761" target="_blank" rel="noopener">Throwing exception from BulkProcessor.Listener.afterBulk results in closing down transport</a>中所说，当失败发生时，收集失败信息、了解失败原因以及最终重发数据比起简单的抛出异常更有意义。然而做为数据接收方，不能及时反馈异常信息给数据推送方，会导致数据推送方误以为一切如故而依然维持高速推送，进而导致累积大量写入失败的数据。为了更好地回退异常写入的数据以及减缓异常时原始数据生成速率，我们采用BulkRequestBuilder替代了BulkProcess。</p></div></div><div id="outline-container-org209c6e5" class="outline-2"><h2 id="org209c6e5">BulkProcessor flush后马上refresh还是读不到刚写入的数据</h2><div class="outline-text-2" id="text-org209c6e5"><p>因为BulkProcessor的flush也是异步执行，返回不等于已经执行完毕，此时执行refresh不会生效。解决这个问题要么创建BulkProcessor时setFlushInterval为较小值，要么关闭句柄时用awaitClose方法代替flush+close。一般BulkProcessor用于批量导入数据，FlushInterval设为太小会影响导入性能，更多时候是不设置这个值的。awaitClose相对比较实用，既可保证数据完全写入立即返回，又可设置最大容忍超时时间，防止集群故障连接挂住。</p></div></div><div id="outline-container-org73a9ac0" class="outline-2"><h2 id="org73a9ac0">BulkRequestBuilder 索引生成性能下降</h2><div class="outline-text-2" id="text-org73a9ac0"><p>在引用BulkRequestBuilder不久之后，一次数据突增后的写入不断变慢暴露了我们的使用方式有问题。由于数据量巨大，这批数据被我们分成多次，每次万行写入，想当然地想要减少创建BulkRequetBuilder的开销。于是在每次写入都复用BulkRequestBuilder句柄，然而事与愿违，复用的结果是每次写入后索引生成速率就明显变慢。百思不得其解，无独有偶，在stackoverflow发现有人也有同样的困扰，详见<a href="https://stackoverflow.com/questions/22950788/elasticsearch-indexing-by-bulkrequestbuilder-getting-slow-down" target="_blank" rel="noopener">Elasticsearch Indexing by BulkRequestBuilder getting slow down</a>。根据最佳回答，每次写入改为重新获取BulkRequestBuilder句柄，索引生成性能下降问题不再出现。原因不明，暂时没有时间看源代码。 </p><p><a id="more"></a></p></div></div><div id="outline-container-orge93df25" class="outline-2"><h2 id="orge93df25">获取Alias包含的所有Index名</h2><div class="outline-text-2" id="text-orge93df25"><p>在stackoverflow中<a href="https://stackoverflow.com/questions/25349947/how-to-find-index-by-alias-in-elasticsearch-java-api" target="_blank" rel="noopener">How to find Index by Alias in Elasticsearch java api?</a>提到的如下获取方式，获得的其实是集群所有Index的名字。也许是早期ES版本的实现方式，没有老版本环境做测试，暂不清楚，但是在6.0+版本中该方式行不通。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// INVALID in 6.0+</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getIndicesFromAliasName</span><span class="params">(String aliasName)</span> </span>&#123;</span><br><span class="line">    IndicesAdminClient iac = client.admin().indices();</span><br><span class="line">    ImmutableOpenMap&lt;String, List&lt;AliasMetaData&gt;&gt; map = iac.getAliases(<span class="keyword">new</span> GetAliasesRequest(aliasName))</span><br><span class="line">            .actionGet().getAliases();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> Set&lt;String&gt; allIndices = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    map.keysIt().forEachRemaining(allIndices::add);</span><br><span class="line">    <span class="keyword">return</span> allIndices;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>6.0+版本的获取方式如下所示，map中的value有数据才是真正被Alias过的Index。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getIndicesFromAliasName</span><span class="params">(String aliasName)</span> </span>&#123;</span><br><span class="line">    ImmutableOpenMap&lt;String, List&lt;AliasMetaData&gt;&gt; map = admin().indices().getAliases(</span><br><span class="line">            <span class="keyword">new</span> GetAliasesRequest(aliasName)).actionGet().getAliases();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> Set&lt;String&gt; indices = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    map.keysIt().forEachRemaining((String key) -&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (map.get(key).size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            indices.add(key);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> indices;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></div><div id="outline-container-orgaa38fd7" class="outline-2"><h2 id="orgaa38fd7">Transport Client VS REST Client</h2><div class="outline-text-2" id="text-orgaa38fd7"><p>虽然 <b>ES</b> 计划在未来的版本中用REST Client完全取代Transport Client，但是在6.0版本中测试，REST依然有10%的性能差距，且部分功能尚未实现。</p></div></div><div id="outline-container-org0355a6e" class="outline-2"><h2 id="org0355a6e">Text VS Keyword</h2><div class="outline-text-2" id="text-org0355a6e"><p>从某个版本开始， <b>ES</b> 的字符串变成了两种类型，text和keyword，text类型主要用于全文检索，keyword类型主要用于聚合。如果两种需求都需要，或者需求不确定，可以按如下方式设置template。索引时会自动保存text类型的field_name以及keyword类型的field_name.keyword。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&quot;field_name&quot;: &#123;</span><br><span class="line">    &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">    &quot;fields&quot;: &#123;</span><br><span class="line">        &quot;keyword&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">            &quot;ignore_above&quot;: 256</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></div><div id="outline-container-orgfb88bfd" class="outline-2"><h2 id="orgfb88bfd"><b>Kibana</b> 精确匹配减号</h2><div class="outline-text-2" id="text-orgfb88bfd"><p>需要查询某个字段刚好等于减号，由于减号是保留字段，根据官网文档通过反斜线进行转义，依然无法查到所需。多次测试后发现只有keyword类型才能查询得到，text类型不能，原因未知。<b>Kibana</b> 经常出现类似Courier Fetch: 200 of 210 shards failed的错误信息，其实并不一定是 <b>ES</b> 存储出现了问题， <b>Kibana</b> 查询语法有问题时也会出现这个错误。</p></div></div><div id="outline-container-org3c0dfe5" class="outline-2"><h2 id="org3c0dfe5"><b>Kibana</b> 查询句子中多个单词</h2><div class="outline-text-2" id="text-org3c0dfe5"><p>因为 <b>Kibana</b> 支持通配符查询，想当然地查询field_name:first_word*second_word。虽然通过 <b>ES</b> 的查询接口没问题，但在 <b>Kibana</b> 并不能查到目标数据。正确的查询方式是 <b>field_name:(+first_word +second_word)</b> 或者 <b>field_name:(first_word AND second_word)</b>需要注意的是first_word与second_word必须完整存在于句中，多一个字符或少一个字符都不行。例如查询的是error，不会匹配到errors。如果需要既匹配error又匹配errors，应使用模糊查询语法 <b>error~</b></p></div></div>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div id=&quot;outline-container-org5194364&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;org5194364&quot;&gt;前言&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-org5194364&quot;&gt;
+&lt;p&gt;
+最近关于ELK(&lt;b&gt;ElasticSearch&lt;/b&gt; &lt;b&gt;Kibana&lt;/b&gt; &lt;b&gt;Logstash&lt;/b&gt;)的需求比较多，需求最能推动研发。
+随着需求的增加，踩了不少坑，统一在此记录一下，免得之后没用又忘。
+目前实现每台每天大约25亿行WEB日志单备份写入，关闭SSL大约可再提高30%至50%。
+但是启用x-pack后，默认不允许关闭SSL。暂时没找到只在外部写入时使用SSL，内部节点通信关闭SSL的方法。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-org8fe5ee6&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;org8fe5ee6&quot;&gt;BulkRequestBuilder VS BulkProcessor&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-org8fe5ee6&quot;&gt;
+&lt;p&gt;
+对于大部分应用场景，BulkProcessor足够好用，纯异步处理机制，也是ES官方推荐的批量索引方式。
+然而BulkProcessor有个小问题，写入失败时只能在子线程中处理，无法抛出异常给主线程。
+正如官方开发人员javanna在&lt;a href=&quot;https://github.com/elastic/elasticsearch/issues/3761&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Throwing exception from BulkProcessor.Listener.afterBulk results in closing down transport&lt;/a&gt;中所说，
+当失败发生时，收集失败信息、了解失败原因以及最终重发数据比起简单的抛出异常更有意义。
+然而做为数据接收方，不能及时反馈异常信息给数据推送方，
+会导致数据推送方误以为一切如故而依然维持高速推送，进而导致累积大量写入失败的数据。
+为了更好地回退异常写入的数据以及减缓异常时原始数据生成速率，我们采用BulkRequestBuilder替代了BulkProcess。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-org209c6e5&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;org209c6e5&quot;&gt;BulkProcessor flush后马上refresh还是读不到刚写入的数据&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-org209c6e5&quot;&gt;
+&lt;p&gt;
+因为BulkProcessor的flush也是异步执行，返回不等于已经执行完毕，此时执行refresh不会生效。
+解决这个问题要么创建BulkProcessor时setFlushInterval为较小值，要么关闭句柄时用awaitClose方法代替flush+close。
+一般BulkProcessor用于批量导入数据，FlushInterval设为太小会影响导入性能，更多时候是不设置这个值的。
+awaitClose相对比较实用，既可保证数据完全写入立即返回，又可设置最大容忍超时时间，防止集群故障连接挂住。
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;outline-container-org73a9ac0&quot; class=&quot;outline-2&quot;&gt;
+&lt;h2 id=&quot;org73a9ac0&quot;&gt;BulkRequestBuilder 索引生成性能下降&lt;/h2&gt;
+&lt;div class=&quot;outline-text-2&quot; id=&quot;text-org73a9ac0&quot;&gt;
+&lt;p&gt;
+在引用BulkRequestBuilder不久之后，一次数据突增后的写入不断变慢暴露了我们的使用方式有问题。
+由于数据量巨大，这批数据被我们分成多次，每次万行写入，想当然地想要减少创建BulkRequetBuilder的开销。
+于是在每次写入都复用BulkRequestBuilder句柄，然而事与愿违，复用的结果是每次写入后索引生成速率就明显变慢。
+百思不得其解，无独有偶，在stackoverflow发现有人也有同样的困扰，详见&lt;a href=&quot;https://stackoverflow.com/questions/22950788/elasticsearch-indexing-by-bulkrequestbuilder-getting-slow-down&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Elasticsearch Indexing by BulkRequestBuilder getting slow down&lt;/a&gt;。
+根据最佳回答，每次写入改为重新获取BulkRequestBuilder句柄，索引生成性能下降问题不再出现。
+原因不明，暂时没有时间看源代码。 
+&lt;/p&gt;
+
+&lt;p&gt;
+    
+    </summary>
+    
+      <category term="大数据" scheme="http://ontheroad.nosace.cc/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+      <category term="ElasticSearch" scheme="http://ontheroad.nosace.cc/tags/ElasticSearch/"/>
+    
+      <category term="Logstash" scheme="http://ontheroad.nosace.cc/tags/Logstash/"/>
+    
+      <category term="Kibana" scheme="http://ontheroad.nosace.cc/tags/Kibana/"/>
+    
+  </entry>
   
   <entry>
     <title>读书笔记-201901</title>

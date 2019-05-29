@@ -105,18 +105,18 @@
 
 
 
-  <meta name="description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
-<meta name="keywords" content="Spring,翻译">
+  <meta name="description" content="前言   最近关于ELK(ElasticSearch Kibana Logstash)的需求比较多，需求最能推动研发。 随着需求的增加，踩了不少坑，统一在此记录一下，免得之后没用又忘。 目前实现每台每天大约25亿行WEB日志单备份写入，关闭SSL大约可再提高30%至50%。 但是启用x-pack后，默认不允许关闭SSL。暂时没找到只在外部写入时使用SSL，内部节点通信关闭SSL的方法。">
+<meta name="keywords" content="ElasticSearch,Logstash,Kibana">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring自动注入组件为空值的两个原因">
-<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+<meta property="og:title" content="ELK踩坑记">
+<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-02-03-2019-02-02-elk踩坑记.html">
 <meta property="og:site_name" content="陌上花开">
-<meta property="og:description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
+<meta property="og:description" content="前言   最近关于ELK(ElasticSearch Kibana Logstash)的需求比较多，需求最能推动研发。 随着需求的增加，踩了不少坑，统一在此记录一下，免得之后没用又忘。 目前实现每台每天大约25亿行WEB日志单备份写入，关闭SSL大约可再提高30%至50%。 但是启用x-pack后，默认不允许关闭SSL。暂时没找到只在外部写入时使用SSL，内部节点通信关闭SSL的方法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-20T09:39:27.000Z">
+<meta property="og:updated_time" content="2019-02-13T06:05:48.418Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring自动注入组件为空值的两个原因">
-<meta name="twitter:description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
+<meta name="twitter:title" content="ELK踩坑记">
+<meta name="twitter:description" content="前言   最近关于ELK(ElasticSearch Kibana Logstash)的需求比较多，需求最能推动研发。 随着需求的增加，踩了不少坑，统一在此记录一下，免得之后没用又忘。 目前实现每台每天大约25亿行WEB日志单备份写入，关闭SSL大约可再提高30%至50%。 但是启用x-pack后，默认不允许关闭SSL。暂时没找到只在外部写入时使用SSL，内部节点通信关闭SSL的方法。">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-02-03-2019-02-02-elk踩坑记.html">
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>Spring自动注入组件为空值的两个原因 | 陌上花开</title>
+  <title>ELK踩坑记 | 陌上花开</title>
   
 
 
@@ -369,7 +369,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-02-03-2019-02-02-elk踩坑记.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Matthew Wong">
@@ -386,7 +386,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring自动注入组件为空值的两个原因
+          <h1 class="post-title" itemprop="name headline">ELK踩坑记
 
               
             
@@ -412,7 +412,7 @@
                 
               
 
-              <time title="创建时间：2019-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-18T00:00:00+08:00">2019-01-18</time>
+              <time title="创建时间：2019-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-02-03T00:00:00+08:00">2019-02-03</time>
             
 
             
@@ -429,7 +429,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-01-20 17:39:27" itemprop="dateModified" datetime="2019-01-20T17:39:27+08:00">2019-01-20</time>
+                <time title="修改时间：2019-02-13 14:05:48" itemprop="dateModified" datetime="2019-02-13T14:05:48+08:00">2019-02-13</time>
               
             
           </span>
@@ -446,7 +446,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a></span>
 
                 
                 
@@ -464,8 +464,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
             
-                <a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" itemprop="commentCount"></span>
+                <a href="/org/2019-02-03-2019-02-02-elk踩坑记.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-02-03-2019-02-02-elk踩坑记.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -473,7 +473,7 @@
 
           
           
-            <span id="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" class="leancloud_visitors" data-flag-title="Spring自动注入组件为空值的两个原因">
+            <span id="/org/2019-02-03-2019-02-02-elk踩坑记.html" class="leancloud_visitors" data-flag-title="ELK踩坑记">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -498,7 +498,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.2k</span>
+                <span title="本文字数">3.6k</span>
               
 
               
@@ -512,7 +512,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 分钟</span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -532,74 +532,128 @@
       
 
       
-        <blockquote>
+        
+<div id="outline-container-org5194364" class="outline-2">
+<h2 id="org5194364">前言</h2>
+<div class="outline-text-2" id="text-org5194364">
 <p>
-最近在用 <b>Spring Boot</b> 做个简单的API服务帮助管理线上服务日益庞大的配置项。
-<b>Spring Boot</b> 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。
-然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。
-作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。
-简单记录一下，以免下次又栽跟头。
-本文翻译自Steve Claridge写的<a href="https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/" target="_blank" rel="noopener">Two reasons why your Spring @Autowired component is null</a>
+最近关于ELK(<b>ElasticSearch</b> <b>Kibana</b> <b>Logstash</b>)的需求比较多，需求最能推动研发。
+随着需求的增加，踩了不少坑，统一在此记录一下，免得之后没用又忘。
+目前实现每台每天大约25亿行WEB日志单备份写入，关闭SSL大约可再提高30%至50%。
+但是启用x-pack后，默认不允许关闭SSL。暂时没找到只在外部写入时使用SSL，内部节点通信关闭SSL的方法。
 </p>
-</blockquote>
+</div>
+</div>
 
-<div id="outline-container-org15c8fdd" class="outline-2">
-<h2 id="org15c8fdd"><b>Spring</b> 自动注入组件为空值的两个原因</h2>
-<div class="outline-text-2" id="text-org15c8fdd">
+<div id="outline-container-org8fe5ee6" class="outline-2">
+<h2 id="org8fe5ee6">BulkRequestBuilder VS BulkProcessor</h2>
+<div class="outline-text-2" id="text-org8fe5ee6">
 <p>
-<b>Spring</b> 框架大量应用控制反转(Inversion of Control, <b>IoC</b> )，
-使得开发者注入对象时无需关心作用域、生命周期及数据清理等繁琐事宜。
+对于大部分应用场景，BulkProcessor足够好用，纯异步处理机制，也是ES官方推荐的批量索引方式。
+然而BulkProcessor有个小问题，写入失败时只能在子线程中处理，无法抛出异常给主线程。
+正如官方开发人员javanna在<a href="https://github.com/elastic/elasticsearch/issues/3761" target="_blank" rel="noopener">Throwing exception from BulkProcessor.Listener.afterBulk results in closing down transport</a>中所说，
+当失败发生时，收集失败信息、了解失败原因以及最终重发数据比起简单的抛出异常更有意义。
+然而做为数据接收方，不能及时反馈异常信息给数据推送方，
+会导致数据推送方误以为一切如故而依然维持高速推送，进而导致累积大量写入失败的数据。
+为了更好地回退异常写入的数据以及减缓异常时原始数据生成速率，我们采用BulkRequestBuilder替代了BulkProcess。
 </p>
+</div>
+</div>
 
+<div id="outline-container-org209c6e5" class="outline-2">
+<h2 id="org209c6e5">BulkProcessor flush后马上refresh还是读不到刚写入的数据</h2>
+<div class="outline-text-2" id="text-org209c6e5">
 <p>
-使用 <b>Spring</b> 比较常遇到的一种错误是，当你引用已经加了注解@Autowired的类时，发现它竟然是空值。
-为什么 <b>Spring</b> 没有自动帮你注入你的类呢？有两种可能的原因。
+因为BulkProcessor的flush也是异步执行，返回不等于已经执行完毕，此时执行refresh不会生效。
+解决这个问题要么创建BulkProcessor时setFlushInterval为较小值，要么关闭句柄时用awaitClose方法代替flush+close。
+一般BulkProcessor用于批量导入数据，FlushInterval设为太小会影响导入性能，更多时候是不设置这个值的。
+awaitClose相对比较实用，既可保证数据完全写入立即返回，又可设置最大容忍超时时间，防止集群故障连接挂住。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org73a9ac0" class="outline-2">
+<h2 id="org73a9ac0">BulkRequestBuilder 索引生成性能下降</h2>
+<div class="outline-text-2" id="text-org73a9ac0">
+<p>
+在引用BulkRequestBuilder不久之后，一次数据突增后的写入不断变慢暴露了我们的使用方式有问题。
+由于数据量巨大，这批数据被我们分成多次，每次万行写入，想当然地想要减少创建BulkRequetBuilder的开销。
+于是在每次写入都复用BulkRequestBuilder句柄，然而事与愿违，复用的结果是每次写入后索引生成速率就明显变慢。
+百思不得其解，无独有偶，在stackoverflow发现有人也有同样的困扰，详见<a href="https://stackoverflow.com/questions/22950788/elasticsearch-indexing-by-bulkrequestbuilder-getting-slow-down" target="_blank" rel="noopener">Elasticsearch Indexing by BulkRequestBuilder getting slow down</a>。
+根据最佳回答，每次写入改为重新获取BulkRequestBuilder句柄，索引生成性能下降问题不再出现。
+原因不明，暂时没有时间看源代码。 
 </p>
 
 <p>
 <a id="more"></a>
 </p>
 </div>
+</div>
 
-<div id="outline-container-orgd92bf8f" class="outline-3">
-<h3 id="orgd92bf8f">手动实例化类</h3>
-<div class="outline-text-3" id="text-orgd92bf8f">
+<div id="outline-container-orge93df25" class="outline-2">
+<h2 id="orge93df25">获取Alias包含的所有Index名</h2>
+<div class="outline-text-2" id="text-orge93df25">
 <p>
-<b>IoC</b> 就像一个酷酷的小孩，可以不用，但如果要用，那就要都用。
-不要有的地方用注解，有的地方又自己实例化。
-比如下面这个代码片段，会导致MyService中repo为空值，从而在doStuff中抛出NullPointerException。
-不是因为MyRepository本身的注解有任何问题，而是因为MyService my = new MyService()手动实例化MyService导致。
+在stackoverflow中<a href="https://stackoverflow.com/questions/25349947/how-to-find-index-by-alias-in-elasticsearch-java-api" target="_blank" rel="noopener">How to find Index by Alias in Elasticsearch java api?</a>提到的如下获取方式，
+获得的其实是集群所有Index的名字。也许是早期ES版本的实现方式，没有老版本环境做测试，暂不清楚，但是在6.0+版本中该方式行不通。
 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyService my = <span class="keyword">new</span> MyService();</span><br><span class="line">    my.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// INVALID in 6.0+</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getIndicesFromAliasName</span><span class="params">(String aliasName)</span> </span>&#123;</span><br><span class="line">    IndicesAdminClient iac = client.admin().indices();</span><br><span class="line">    ImmutableOpenMap&lt;String, List&lt;AliasMetaData&gt;&gt; map = iac.getAliases(<span class="keyword">new</span> GetAliasesRequest(aliasName))</span><br><span class="line">            .actionGet().getAliases();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> Set&lt;String&gt; allIndices = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    map.keysIt().forEachRemaining(allIndices::add);</span><br><span class="line">    <span class="keyword">return</span> allIndices;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>
-修复这个问题很简单，如下所示，只需要将MyService也加上注解，使其通过 <b>IoC</b> 注入即可。
+6.0+版本的获取方式如下所示，map中的value有数据才是真正被Alias过的Index。
 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyService service;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    service.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getIndicesFromAliasName</span><span class="params">(String aliasName)</span> </span>&#123;</span><br><span class="line">    ImmutableOpenMap&lt;String, List&lt;AliasMetaData&gt;&gt; map = admin().indices().getAliases(</span><br><span class="line">            <span class="keyword">new</span> GetAliasesRequest(aliasName)).actionGet().getAliases();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> Set&lt;String&gt; indices = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    map.keysIt().forEachRemaining((String key) -&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (map.get(key).size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            indices.add(key);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> indices;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </div>
 </div>
 
-<div id="outline-container-org04b8c53" class="outline-3">
-<h3 id="org04b8c53">忘记注解 <b>@COMPONENT</b></h3>
-<div class="outline-text-3" id="text-org04b8c53">
+<div id="outline-container-orgaa38fd7" class="outline-2">
+<h2 id="orgaa38fd7">Transport Client VS REST Client</h2>
+<div class="outline-text-2" id="text-orgaa38fd7">
 <p>
-<b>Spring</b> 通过组件扫描去发现需要注入的类。
-通常是扫描classpath目录，查找所有注解 <b>@Component</b> 的类，将它们标记为可自动注入。
-所以当你忘记注解你想使用的组件，将得到空值NullPointerException。
+虽然 <b>ES</b> 计划在未来的版本中用REST Client完全取代Transport Client，
+但是在6.0版本中测试，REST依然有10%的性能差距，且部分功能尚未实现。
 </p>
-
-<p>
-<b>@Service*， *@Repository</b> 以及 <b>Controller</b> 都是特殊的 <b>@Component</b> ，
-所以需要自动注入的类都需要注解这四个其中之一。
-如下代码将导致空值。
-</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>
-加上 <b>@Component</b> 注解就可以了。
-</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </div>
+</div>
+
+<div id="outline-container-org0355a6e" class="outline-2">
+<h2 id="org0355a6e">Text VS Keyword</h2>
+<div class="outline-text-2" id="text-org0355a6e">
+<p>
+从某个版本开始， <b>ES</b> 的字符串变成了两种类型，text和keyword，
+text类型主要用于全文检索，keyword类型主要用于聚合。
+如果两种需求都需要，或者需求不确定，可以按如下方式设置template。
+索引时会自动保存text类型的field_name以及keyword类型的field_name.keyword。
+</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&quot;field_name&quot;: &#123;</span><br><span class="line">    &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">    &quot;fields&quot;: &#123;</span><br><span class="line">        &quot;keyword&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">            &quot;ignore_above&quot;: 256</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+
+<div id="outline-container-orgfb88bfd" class="outline-2">
+<h2 id="orgfb88bfd"><b>Kibana</b> 精确匹配减号</h2>
+<div class="outline-text-2" id="text-orgfb88bfd">
+<p>
+需要查询某个字段刚好等于减号，由于减号是保留字段，
+根据官网文档通过反斜线进行转义，依然无法查到所需。
+多次测试后发现只有keyword类型才能查询得到，text类型不能，原因未知。
+<b>Kibana</b> 经常出现类似Courier Fetch: 200 of 210 shards failed的错误信息，
+其实并不一定是 <b>ES</b> 存储出现了问题， <b>Kibana</b> 查询语法有问题时也会出现这个错误。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3c0dfe5" class="outline-2">
+<h2 id="org3c0dfe5"><b>Kibana</b> 查询句子中多个单词</h2>
+<div class="outline-text-2" id="text-org3c0dfe5">
+<p>
+因为 <b>Kibana</b> 支持通配符查询，想当然地查询field_name:first_word*second_word。
+虽然通过 <b>ES</b> 的查询接口没问题，但在 <b>Kibana</b> 并不能查到目标数据。
+正确的查询方式是 <b>field_name:(+first_word +second_word)</b> 或者 <b>field_name:(first_word AND second_word)</b>
+需要注意的是first_word与second_word必须完整存在于句中，多一个字符或少一个字符都不行。
+例如查询的是error，不会匹配到errors。
+如果需要既匹配error又匹配errors，应使用模糊查询语法 <b>error~</b></p>
 </div>
 </div>
 
@@ -619,12 +673,12 @@
 
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">Spring自动注入组件为空值的两个原因</a></p>
+  <p><span>本文标题:</span><a href="/org/2019-02-03-2019-02-02-elk踩坑记.html">ELK踩坑记</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Matthew Wong 的个人博客">Matthew Wong</a></p>
-  <p><span>发布时间:</span>2019年01月18日 - 00:01</p>
-  <p><span>最后更新:</span>2019年01月20日 - 17:01</p>
-  <p><span>原始链接:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" title="Spring自动注入组件为空值的两个原因">http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年02月03日 - 00:02</p>
+  <p><span>最后更新:</span>2019年02月13日 - 14:02</p>
+  <p><span>原始链接:</span><a href="/org/2019-02-03-2019-02-02-elk踩坑记.html" title="ELK踩坑记">http://ontheroad.nosace.cc/org/2019-02-03-2019-02-02-elk踩坑记.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-02-03-2019-02-02-elk踩坑记.html" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -670,9 +724,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+            <a href="/tags/ElasticSearch/" rel="tag"><i class="fa fa-tag"></i> ElasticSearch</a>
           
-            <a href="/tags/翻译/" rel="tag"><i class="fa fa-tag"></i> 翻译</a>
+            <a href="/tags/Logstash/" rel="tag"><i class="fa fa-tag"></i> Logstash</a>
+          
+            <a href="/tags/Kibana/" rel="tag"><i class="fa fa-tag"></i> Kibana</a>
           
         </div>
       
@@ -685,8 +741,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/org/2019-01-03-2019-01-03-读书笔记-201812.html" rel="next" title="读书笔记-201812">
-                <i class="fa fa-chevron-left"></i> 读书笔记-201812
+              <a href="/org/2019-02-01-2019-02-01-读书笔记-201901.html" rel="next" title="读书笔记-201901">
+                <i class="fa fa-chevron-left"></i> 读书笔记-201901
               </a>
             
           </div>
@@ -695,8 +751,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html" rel="prev" title="博客支持PWA和压缩">
-                博客支持PWA和压缩 <i class="fa fa-chevron-right"></i>
+              <a href="/org/2019-04-02-2019-04-02-读书笔记-201902-03.html" rel="prev" title="读书笔记-201902-03">
+                读书笔记-201902-03 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -891,7 +947,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org15c8fdd"><span class="nav-number">1.</span> <span class="nav-text">Spring 自动注入组件为空值的两个原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#orgd92bf8f"><span class="nav-number">1.1.</span> <span class="nav-text">手动实例化类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#org04b8c53"><span class="nav-number">1.2.</span> <span class="nav-text">忘记注解 @COMPONENT</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org5194364"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org8fe5ee6"><span class="nav-number">2.</span> <span class="nav-text">BulkRequestBuilder VS BulkProcessor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org209c6e5"><span class="nav-number">3.</span> <span class="nav-text">BulkProcessor flush后马上refresh还是读不到刚写入的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org73a9ac0"><span class="nav-number">4.</span> <span class="nav-text">BulkRequestBuilder 索引生成性能下降</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orge93df25"><span class="nav-number">5.</span> <span class="nav-text">获取Alias包含的所有Index名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgaa38fd7"><span class="nav-number">6.</span> <span class="nav-text">Transport Client VS REST Client</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org0355a6e"><span class="nav-number">7.</span> <span class="nav-text">Text VS Keyword</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgfb88bfd"><span class="nav-number">8.</span> <span class="nav-text">Kibana 精确匹配减号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org3c0dfe5"><span class="nav-number">9.</span> <span class="nav-text">Kibana 查询句子中多个单词</span></a></li></ol></div>
             
 
           </div>

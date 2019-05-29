@@ -105,18 +105,18 @@
 
 
 
-  <meta name="description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
-<meta name="keywords" content="Spring,翻译">
+  <meta name="description" content="同步方法   通过curl调用 ElasticSearch 的reindex API，优点是简单易用，缺点是同步性能不够快 通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引      reindex 注意事项   需要源索引中文档开启_source字段 不会引用源索引的配置，如mapping，shard，repl">
+<meta name="keywords" content="ElasticSearch">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring自动注入组件为空值的两个原因">
-<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+<meta property="og:title" content="ElasticSearch 同步数据">
+<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html">
 <meta property="og:site_name" content="陌上花开">
-<meta property="og:description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
+<meta property="og:description" content="同步方法   通过curl调用 ElasticSearch 的reindex API，优点是简单易用，缺点是同步性能不够快 通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引      reindex 注意事项   需要源索引中文档开启_source字段 不会引用源索引的配置，如mapping，shard，repl">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-20T09:39:27.000Z">
+<meta property="og:updated_time" content="2019-05-29T09:47:49.063Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring自动注入组件为空值的两个原因">
-<meta name="twitter:description" content="最近在用 Spring Boot 做个简单的API服务帮助管理线上服务日益庞大的配置项。 Spring Boot 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。 然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。 作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。 简单记录一下，以免下次又栽跟头。 本文翻译">
+<meta name="twitter:title" content="ElasticSearch 同步数据">
+<meta name="twitter:description" content="同步方法   通过curl调用 ElasticSearch 的reindex API，优点是简单易用，缺点是同步性能不够快 通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引      reindex 注意事项   需要源索引中文档开启_source字段 不会引用源索引的配置，如mapping，shard，repl">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html">
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>Spring自动注入组件为空值的两个原因 | 陌上花开</title>
+  <title>ElasticSearch 同步数据 | 陌上花开</title>
   
 
 
@@ -369,7 +369,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Matthew Wong">
@@ -386,7 +386,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring自动注入组件为空值的两个原因
+          <h1 class="post-title" itemprop="name headline">ElasticSearch 同步数据
 
               
             
@@ -412,24 +412,12 @@
                 
               
 
-              <time title="创建时间：2019-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-18T00:00:00+08:00">2019-01-18</time>
+              <time title="创建时间：2019-05-29 00:00:00 / 修改时间：17:47:49" itemprop="dateCreated datePublished" datetime="2019-05-29T00:00:00+08:00">2019-05-29</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-01-20 17:39:27" itemprop="dateModified" datetime="2019-01-20T17:39:27+08:00">2019-01-20</time>
               
             
           </span>
@@ -446,7 +434,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a></span>
 
                 
                 
@@ -464,8 +452,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
             
-                <a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" itemprop="commentCount"></span>
+                <a href="/org/2019-05-29-2019-05-29-es-reindex-api.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-05-29-2019-05-29-es-reindex-api.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -473,7 +461,7 @@
 
           
           
-            <span id="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" class="leancloud_visitors" data-flag-title="Spring自动注入组件为空值的两个原因">
+            <span id="/org/2019-05-29-2019-05-29-es-reindex-api.html" class="leancloud_visitors" data-flag-title="ElasticSearch 同步数据">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -498,7 +486,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.2k</span>
+                <span title="本文字数">1.6k</span>
               
 
               
@@ -512,7 +500,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 分钟</span>
+                <span title="阅读时长">1 分钟</span>
               
             </div>
           
@@ -532,74 +520,80 @@
       
 
       
-        <blockquote>
-<p>
-最近在用 <b>Spring Boot</b> 做个简单的API服务帮助管理线上服务日益庞大的配置项。
-<b>Spring Boot</b> 优秀的封装极大简化了API开发的工作量，很容易通过配置和注解自动生成所需对象。
-然而层层封装的框架更需要去了解底层细节，否则遇到问题经常一头雾水。
-作为副功能，没有太多时间去学习底层细节，只能出现问题慢慢调试，也遇到过本文所述的简单问题。
-简单记录一下，以免下次又栽跟头。
-本文翻译自Steve Claridge写的<a href="https://www.moreofless.co.uk/spring-mvc-java-autowired-component-null-repository-service/" target="_blank" rel="noopener">Two reasons why your Spring @Autowired component is null</a>
-</p>
-</blockquote>
+        
+<div id="outline-container-org4f3b1ef" class="outline-2">
+<h2 id="org4f3b1ef">同步方法</h2>
+<div class="outline-text-2" id="text-org4f3b1ef">
+<ol class="org-ol">
+<li>通过curl调用 <b>ElasticSearch</b> 的reindex API，优点是简单易用，缺点是同步性能不够快</li>
+<li>通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引</li>
+</ol>
+</div>
+</div>
 
-<div id="outline-container-org15c8fdd" class="outline-2">
-<h2 id="org15c8fdd"><b>Spring</b> 自动注入组件为空值的两个原因</h2>
-<div class="outline-text-2" id="text-org15c8fdd">
-<p>
-<b>Spring</b> 框架大量应用控制反转(Inversion of Control, <b>IoC</b> )，
-使得开发者注入对象时无需关心作用域、生命周期及数据清理等繁琐事宜。
-</p>
-
-<p>
-使用 <b>Spring</b> 比较常遇到的一种错误是，当你引用已经加了注解@Autowired的类时，发现它竟然是空值。
-为什么 <b>Spring</b> 没有自动帮你注入你的类呢？有两种可能的原因。
-</p>
+<div id="outline-container-orga54a556" class="outline-2">
+<h2 id="orga54a556">reindex 注意事项</h2>
+<div class="outline-text-2" id="text-orga54a556">
+<ol class="org-ol">
+<li>需要源索引中文档开启_source字段</li>
+<li>不会引用源索引的配置，如mapping，shard，replicas等，若有需要应该先创建并设置好目标索引后再调用</li>
+<li>从其它集群reindex数据的话，需要配置reindex.remote.whitelist，如果开启SSL，还需要配置证书等</li>
+</ol>
 
 <p>
 <a id="more"></a>
 </p>
 </div>
+</div>
 
-<div id="outline-container-orgd92bf8f" class="outline-3">
-<h3 id="orgd92bf8f">手动实例化类</h3>
-<div class="outline-text-3" id="text-orgd92bf8f">
-<p>
-<b>IoC</b> 就像一个酷酷的小孩，可以不用，但如果要用，那就要都用。
-不要有的地方用注解，有的地方又自己实例化。
-比如下面这个代码片段，会导致MyService中repo为空值，从而在doStuff中抛出NullPointerException。
-不是因为MyRepository本身的注解有任何问题，而是因为MyService my = new MyService()手动实例化MyService导致。
-</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyService my = <span class="keyword">new</span> MyService();</span><br><span class="line">    my.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>
-修复这个问题很简单，如下所示，只需要将MyService也加上注解，使其通过 <b>IoC</b> 注入即可。
-</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyService service;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@GetMapping</span>(<span class="string">"/example"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    service.doStuff();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">MyService</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  MyRepository repo;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    repo.findByName( <span class="string">"steve"</span> );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">My</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">List&lt;My&gt; <span class="title">findByName</span><span class="params">( String name )</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div id="outline-container-org3cc5d9a" class="outline-2">
+<h2 id="org3cc5d9a">reindex 接口</h2>
+<div class="outline-text-2" id="text-org3cc5d9a">
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">POST _reindex?slices=5&amp;refresh&amp;wait_for_completion=false</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"source"</span>: &#123;</span><br><span class="line">    <span class="attr">"remote"</span>: &#123;</span><br><span class="line">      <span class="attr">"host"</span>: <span class="string">"http://otherhost:9200"</span>,</span><br><span class="line">      <span class="attr">"username"</span>: <span class="string">"user"</span>,</span><br><span class="line">      <span class="attr">"password"</span>: <span class="string">"pass"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"index"</span>: <span class="string">"old_index_name"</span>,</span><br><span class="line">    <span class="attr">"size"</span>: <span class="string">"10000"</span>,</span><br><span class="line">    <span class="attr">"query"</span>: &#123;</span><br><span class="line">      <span class="attr">"term"</span>: &#123;</span><br><span class="line">        <span class="attr">"field_name"</span>: <span class="string">"field_value"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"dest"</span>: &#123;</span><br><span class="line">    <span class="attr">"index"</span>: <span class="string">"new_index_name"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"script"</span>: &#123;</span><br><span class="line">    <span class="attr">"source"</span>: <span class="string">"ctx._source.tag = ctx._source.remove(\"flag\")"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol class="org-ol">
+<li>source.slices 可选项，默认值为1，设置为源索引shards个数，并发检索，可以达到最高效率</li>
+<li>source.wait_for_completion 可选项，默认为true，设置为false可以令reindex异步执行，大量数据的同步通常耗时较久</li>
+<li>source.remote 可选项，默认为空，表示只在本地做reindex，主要用于字段重命名，修复异常数据等，配置此项可用于集群间同步数据</li>
+<li>source.index 必须项，源索引名</li>
+<li>source.size 可选项，默认值为1000，一次获取的文档个数，视集群情况调整</li>
+<li>source.query 可选项，默认为空，即reindex源索引所有数据</li>
+<li>dest.index 必须项，目标索引名</li>
+<li>script.source 可选项，默认为空，主要用于数据修改，示例中将flag重命名为tag</li>
+</ol>
 </div>
 </div>
 
-<div id="outline-container-org04b8c53" class="outline-3">
-<h3 id="org04b8c53">忘记注解 <b>@COMPONENT</b></h3>
-<div class="outline-text-3" id="text-org04b8c53">
-<p>
-<b>Spring</b> 通过组件扫描去发现需要注入的类。
-通常是扫描classpath目录，查找所有注解 <b>@Component</b> 的类，将它们标记为可自动注入。
-所以当你忘记注解你想使用的组件，将得到空值NullPointerException。
-</p>
-
-<p>
-<b>@Service*， *@Repository</b> 以及 <b>Controller</b> 都是特殊的 <b>@Component</b> ，
-所以需要自动注入的类都需要注解这四个其中之一。
-如下代码将导致空值。
-</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>
-加上 <b>@Component</b> 注解就可以了。
-</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doStuff</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div id="outline-container-org8b53ac1" class="outline-2">
+<h2 id="org8b53ac1">任务进度</h2>
+<div class="outline-text-2" id="text-org8b53ac1">
 </div>
+<div id="outline-container-org51b912e" class="outline-3">
+<h3 id="org51b912e">进度查询</h3>
+<div class="outline-text-3" id="text-org51b912e">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET _tasks?detailed=true&amp;actions=*reindex</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+<div id="outline-container-orgf46a918" class="outline-3">
+<h3 id="orgf46a918">取消任务</h3>
+<div class="outline-text-3" id="text-orgf46a918">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST _tasks/task_id/_cancel</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9d8a1c8" class="outline-2">
+<h2 id="org9d8a1c8">DIY同步过程</h2>
+<div class="outline-text-2" id="text-org9d8a1c8">
+<ol class="org-ol">
+<li>备份数据</li>
+<li>删除数据(如果同步的是整个索引的数据，只需要把索引从alias中移除即可完成备份与删除)</li>
+<li>从远端拉取数据</li>
+<li>按源索引的shards数并发设置SliceBuilder</li>
+<li>SliceBuilder调用addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)有奇效</li>
+<li>线程中通过scroll接口分页获取一批数据</li>
+<li>获取的数据通过BulkProccessor异步写入本地集群，设置最新分页id，重复6</li>
+<li>最终等待BulkProccessor返回</li>
+</ol>
 </div>
 </div>
 
@@ -619,12 +613,12 @@
 
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html">Spring自动注入组件为空值的两个原因</a></p>
+  <p><span>本文标题:</span><a href="/org/2019-05-29-2019-05-29-es-reindex-api.html">ElasticSearch 同步数据</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Matthew Wong 的个人博客">Matthew Wong</a></p>
-  <p><span>发布时间:</span>2019年01月18日 - 00:01</p>
-  <p><span>最后更新:</span>2019年01月20日 - 17:01</p>
-  <p><span>原始链接:</span><a href="/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" title="Spring自动注入组件为空值的两个原因">http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-01-18-2019-01-18-spring自动注入组件为空值的两个原因.html" aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年05月29日 - 00:05</p>
+  <p><span>最后更新:</span>2019年05月29日 - 17:05</p>
+  <p><span>原始链接:</span><a href="/org/2019-05-29-2019-05-29-es-reindex-api.html" title="ElasticSearch 同步数据">http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -670,9 +664,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
-          
-            <a href="/tags/翻译/" rel="tag"><i class="fa fa-tag"></i> 翻译</a>
+            <a href="/tags/ElasticSearch/" rel="tag"><i class="fa fa-tag"></i> ElasticSearch</a>
           
         </div>
       
@@ -685,8 +677,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/org/2019-01-03-2019-01-03-读书笔记-201812.html" rel="next" title="读书笔记-201812">
-                <i class="fa fa-chevron-left"></i> 读书笔记-201812
+              <a href="/org/2019-04-02-2019-04-02-读书笔记-201902-03.html" rel="next" title="读书笔记-201902-03">
+                <i class="fa fa-chevron-left"></i> 读书笔记-201902-03
               </a>
             
           </div>
@@ -694,10 +686,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/org/2019-01-20-2019-01-20-hexo支持pwa和压缩.html" rel="prev" title="博客支持PWA和压缩">
-                博客支持PWA和压缩 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -891,7 +879,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org15c8fdd"><span class="nav-number">1.</span> <span class="nav-text">Spring 自动注入组件为空值的两个原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#orgd92bf8f"><span class="nav-number">1.1.</span> <span class="nav-text">手动实例化类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#org04b8c53"><span class="nav-number">1.2.</span> <span class="nav-text">忘记注解 @COMPONENT</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org4f3b1ef"><span class="nav-number">1.</span> <span class="nav-text">同步方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orga54a556"><span class="nav-number">2.</span> <span class="nav-text">reindex 注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org3cc5d9a"><span class="nav-number">3.</span> <span class="nav-text">reindex 接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org8b53ac1"><span class="nav-number">4.</span> <span class="nav-text">任务进度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#org51b912e"><span class="nav-number">4.1.</span> <span class="nav-text">进度查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orgf46a918"><span class="nav-number">4.2.</span> <span class="nav-text">取消任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org9d8a1c8"><span class="nav-number">5.</span> <span class="nav-text">DIY同步过程</span></a></li></ol></div>
             
 
           </div>

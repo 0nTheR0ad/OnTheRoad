@@ -368,6 +368,792 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Matthew Wong">
+      <meta itemprop="description" content="无折腾 不码农">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陌上花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/org/2019-05-29-2019-05-29-es-reindex-api.html" class="post-title-link" itemprop="url">ElasticSearch 同步数据</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-29 00:00:00 / 修改时间：17:47:49" itemprop="dateCreated datePublished" datetime="2019-05-29T00:00:00+08:00">2019-05-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/org/2019-05-29-2019-05-29-es-reindex-api.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-05-29-2019-05-29-es-reindex-api.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/org/2019-05-29-2019-05-29-es-reindex-api.html" class="leancloud_visitors" data-flag-title="ElasticSearch 同步数据">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">1.6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">1 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <div id="outline-container-org4f3b1ef" class="outline-2">
+<h2 id="org4f3b1ef">同步方法</h2>
+<div class="outline-text-2" id="text-org4f3b1ef">
+<ol class="org-ol">
+<li>通过curl调用 <b>ElasticSearch</b> 的reindex API，优点是简单易用，缺点是同步性能不够快</li>
+<li>通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orga54a556" class="outline-2">
+<h2 id="orga54a556">reindex 注意事项</h2>
+<div class="outline-text-2" id="text-orga54a556">
+<ol class="org-ol">
+<li>需要源索引中文档开启_source字段</li>
+<li>不会引用源索引的配置，如mapping，shard，replicas等，若有需要应该先创建并设置好目标索引后再调用</li>
+<li>从其它集群reindex数据的话，需要配置reindex.remote.whitelist，如果开启SSL，还需要配置证书等</li>
+</ol>
+
+<p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/org/2019-05-29-2019-05-29-es-reindex-api.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </div></div></article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-04-02-2019-04-02-读书笔记-201902-03.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Matthew Wong">
+      <meta itemprop="description" content="无折腾 不码农">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陌上花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/org/2019-04-02-2019-04-02-读书笔记-201902-03.html" class="post-title-link" itemprop="url">读书笔记-201902-03</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-02 00:00:00 / 修改时间：22:15:32" itemprop="dateCreated datePublished" datetime="2019-04-02T00:00:00+08:00">2019-04-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/org/2019-04-02-2019-04-02-读书笔记-201902-03.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-04-02-2019-04-02-读书笔记-201902-03.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/org/2019-04-02-2019-04-02-读书笔记-201902-03.html" class="leancloud_visitors" data-flag-title="读书笔记-201902-03">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">4.2k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">4 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <div id="outline-container-org1499849" class="outline-2">
+<h2 id="org1499849">正面管教</h2>
+<div class="outline-text-2" id="text-org1499849">
+<p>
+不同于传统的严厉式或者溺爱式管教，书中提倡和善而坚定的鼓励式教育。
+鼓励并不像很多人相信的那样，是对不良行为的奖励，恰恰相反，鼓励会消除孩子对不良行为的需要。
+为人父母总是不自觉地替孩子做事，甚至做决定。
+当看到孩子费劲地爬向玩具时，我们总会不自觉地把玩具拿到孩子面前。
+但是那样会剥夺他们通过自己的体验来发展出对自己能力的信念的机会。
+时刻提醒自己，不要替孩子做任何他能做的事。
+</p>
+
+<blockquote>
+<p>
+书摘
+</p>
+<ul class="org-ul">
+<li><b>正面管教倡导的是和善而坚定，并且把有价值的社会技能和人生技能教给孩子</b></li>
+<li>和善能抵消过于坚定所造成的所有问题（反叛、抗拒、对自尊的挫伤），而坚定则能抵消过于和善所造成的所有问题（娇纵、操纵父母、被宠坏的小淘气鬼、对自尊的挫伤）</li>
+<li><b>孩子们的察觉能力很强，但解释能力却很差</b></li>
+<li><b>孩子的首要目的是追求归属感和价值感</b></li>
+<li><b>不要替孩子做任何他能做的事，那样会剥夺他们通过自己的体验来发展出对自己能力的信念的机会</b></li>
+<li><b>孩子的行为是以自己认为真实的东西为基础，而不是以事实为基础的</b></li>
+<li>行为不当的孩子是丧失了信心的孩子，他们的不良行为是在让你知道，他们没有感受到归属感和价值感，而且他们对于如何找到归属感和价值感抱有错误的信念</li>
+<li><b>鼓励并不像很多人相信的那样，是对不良行为的奖励。不是的，鼓励会消除孩子对不良行为的需要</b></li>
+<li>只要大人通过反复提醒或者通过替孩子解决问题，而不是和孩子一起解决问题，将本应该由孩子来承担的责任揽过去，孩子就永远也学不会对自己的行为负责</li>
+</ul>
+</blockquote>
+
+<p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/org/2019-04-02-2019-04-02-读书笔记-201902-03.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </div></div></article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-02-03-2019-02-02-elk踩坑记.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Matthew Wong">
+      <meta itemprop="description" content="无折腾 不码农">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陌上花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/org/2019-02-03-2019-02-02-elk踩坑记.html" class="post-title-link" itemprop="url">ELK踩坑记</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-02-03T00:00:00+08:00">2019-02-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-02-13 14:05:48" itemprop="dateModified" datetime="2019-02-13T14:05:48+08:00">2019-02-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/org/2019-02-03-2019-02-02-elk踩坑记.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-02-03-2019-02-02-elk踩坑记.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/org/2019-02-03-2019-02-02-elk踩坑记.html" class="leancloud_visitors" data-flag-title="ELK踩坑记">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">3.6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">3 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <div id="outline-container-org5194364" class="outline-2">
+<h2 id="org5194364">前言</h2>
+<div class="outline-text-2" id="text-org5194364">
+<p>
+最近关于ELK(<b>ElasticSearch</b> <b>Kibana</b> <b>Logstash</b>)的需求比较多，需求最能推动研发。
+随着需求的增加，踩了不少坑，统一在此记录一下，免得之后没用又忘。
+目前实现每台每天大约25亿行WEB日志单备份写入，关闭SSL大约可再提高30%至50%。
+但是启用x-pack后，默认不允许关闭SSL。暂时没找到只在外部写入时使用SSL，内部节点通信关闭SSL的方法。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8fe5ee6" class="outline-2">
+<h2 id="org8fe5ee6">BulkRequestBuilder VS BulkProcessor</h2>
+<div class="outline-text-2" id="text-org8fe5ee6">
+<p>
+对于大部分应用场景，BulkProcessor足够好用，纯异步处理机制，也是ES官方推荐的批量索引方式。
+然而BulkProcessor有个小问题，写入失败时只能在子线程中处理，无法抛出异常给主线程。
+正如官方开发人员javanna在<a href="https://github.com/elastic/elasticsearch/issues/3761" target="_blank" rel="noopener">Throwing exception from BulkProcessor.Listener.afterBulk results in closing down transport</a>中所说，
+当失败发生时，收集失败信息、了解失败原因以及最终重发数据比起简单的抛出异常更有意义。
+然而做为数据接收方，不能及时反馈异常信息给数据推送方，
+会导致数据推送方误以为一切如故而依然维持高速推送，进而导致累积大量写入失败的数据。
+为了更好地回退异常写入的数据以及减缓异常时原始数据生成速率，我们采用BulkRequestBuilder替代了BulkProcess。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org209c6e5" class="outline-2">
+<h2 id="org209c6e5">BulkProcessor flush后马上refresh还是读不到刚写入的数据</h2>
+<div class="outline-text-2" id="text-org209c6e5">
+<p>
+因为BulkProcessor的flush也是异步执行，返回不等于已经执行完毕，此时执行refresh不会生效。
+解决这个问题要么创建BulkProcessor时setFlushInterval为较小值，要么关闭句柄时用awaitClose方法代替flush+close。
+一般BulkProcessor用于批量导入数据，FlushInterval设为太小会影响导入性能，更多时候是不设置这个值的。
+awaitClose相对比较实用，既可保证数据完全写入立即返回，又可设置最大容忍超时时间，防止集群故障连接挂住。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org73a9ac0" class="outline-2">
+<h2 id="org73a9ac0">BulkRequestBuilder 索引生成性能下降</h2>
+<div class="outline-text-2" id="text-org73a9ac0">
+<p>
+在引用BulkRequestBuilder不久之后，一次数据突增后的写入不断变慢暴露了我们的使用方式有问题。
+由于数据量巨大，这批数据被我们分成多次，每次万行写入，想当然地想要减少创建BulkRequetBuilder的开销。
+于是在每次写入都复用BulkRequestBuilder句柄，然而事与愿违，复用的结果是每次写入后索引生成速率就明显变慢。
+百思不得其解，无独有偶，在stackoverflow发现有人也有同样的困扰，详见<a href="https://stackoverflow.com/questions/22950788/elasticsearch-indexing-by-bulkrequestbuilder-getting-slow-down" target="_blank" rel="noopener">Elasticsearch Indexing by BulkRequestBuilder getting slow down</a>。
+根据最佳回答，每次写入改为重新获取BulkRequestBuilder句柄，索引生成性能下降问题不再出现。
+原因不明，暂时没有时间看源代码。 
+</p>
+
+<p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/org/2019-02-03-2019-02-02-elk踩坑记.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </div></div></article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-02-01-2019-02-01-读书笔记-201901.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1977,7 +2763,7 @@ WEB分化为APP是其在移动端的无能为力所致，只要能解决离线�
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1996,7 +2782,9 @@ WEB分化为APP是其在移动端的无能为力所致，只要能解决离线�
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2027,7 +2815,15 @@ WEB分化为APP是其在移动端的无能为力所致，只要能解决离线�
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2101,7 +2897,7 @@ WEB分化为APP是其在移动端的无能为力所致，只要能解决离线�
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">31k</span>
+    <span title="站点总字数">40k</span>
   
 
   
@@ -2110,7 +2906,7 @@ WEB分化为APP是其在移动端的无能为力所致，只要能解决离线�
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">28 分钟</span>
+    <span title="站点阅读时长">37 分钟</span>
   
 </div>
 
