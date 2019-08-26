@@ -105,18 +105,18 @@
 
 
 
-  <meta name="description" content="同步方法   通过curl调用 ElasticSearch 的reindex API，优点是简单易用，缺点是同步性能不够快 通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引      reindex 注意事项   需要源索引中文档开启_source字段 不会引用源索引的配置，如mapping，shard，repl">
-<meta name="keywords" content="ElasticSearch">
+  <meta name="description" content="巨人的陨落 (肯·福莱特)   关于一战的小说，从各国各阶层人民的眼中去看一战的来龙去脉，给读者绘制了一副立体的过去的世界。 七分实三分虚，作者对历史的把控能力游刃有余。 那么多次和平的希望被命运无情地剥夺，无数的偶然酿成了灾难性的世界大战，令人难以置信。     自由的美国人那里学习民主，从狡猾的英国人那里学习外交策略，从时尚的法国人那里学习高雅的生活艺术。 在为妇女争取平等的战斗中，你不但要">
+<meta name="keywords" content="小说,思想">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ElasticSearch 同步数据">
-<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html">
+<meta property="og:title" content="书摘-201906-07">
+<meta property="og:url" content="http://ontheroad.nosace.cc/org/2019-08-26-2019-08-26-书摘-201906-07.html">
 <meta property="og:site_name" content="陌上花开">
-<meta property="og:description" content="同步方法   通过curl调用 ElasticSearch 的reindex API，优点是简单易用，缺点是同步性能不够快 通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引      reindex 注意事项   需要源索引中文档开启_source字段 不会引用源索引的配置，如mapping，shard，repl">
+<meta property="og:description" content="巨人的陨落 (肯·福莱特)   关于一战的小说，从各国各阶层人民的眼中去看一战的来龙去脉，给读者绘制了一副立体的过去的世界。 七分实三分虚，作者对历史的把控能力游刃有余。 那么多次和平的希望被命运无情地剥夺，无数的偶然酿成了灾难性的世界大战，令人难以置信。     自由的美国人那里学习民主，从狡猾的英国人那里学习外交策略，从时尚的法国人那里学习高雅的生活艺术。 在为妇女争取平等的战斗中，你不但要">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-24T13:38:40.000Z">
+<meta property="og:updated_time" content="2019-08-26T02:57:51.176Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ElasticSearch 同步数据">
-<meta name="twitter:description" content="同步方法   通过curl调用 ElasticSearch 的reindex API，优点是简单易用，缺点是同步性能不够快 通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引      reindex 注意事项   需要源索引中文档开启_source字段 不会引用源索引的配置，如mapping，shard，repl">
+<meta name="twitter:title" content="书摘-201906-07">
+<meta name="twitter:description" content="巨人的陨落 (肯·福莱特)   关于一战的小说，从各国各阶层人民的眼中去看一战的来龙去脉，给读者绘制了一副立体的过去的世界。 七分实三分虚，作者对历史的把控能力游刃有余。 那么多次和平的希望被命运无情地剥夺，无数的偶然酿成了灾难性的世界大战，令人难以置信。     自由的美国人那里学习民主，从狡猾的英国人那里学习外交策略，从时尚的法国人那里学习高雅的生活艺术。 在为妇女争取平等的战斗中，你不但要">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html">
+  <link rel="canonical" href="http://ontheroad.nosace.cc/org/2019-08-26-2019-08-26-书摘-201906-07.html">
 
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>ElasticSearch 同步数据 | 陌上花开</title>
+  <title>书摘-201906-07 | 陌上花开</title>
   
 
 
@@ -369,7 +369,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html">
+    <link itemprop="mainEntityOfPage" href="http://ontheroad.nosace.cc/org/2019-08-26-2019-08-26-书摘-201906-07.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Matthew Wong">
@@ -386,7 +386,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ElasticSearch 同步数据
+          <h1 class="post-title" itemprop="name headline">书摘-201906-07
 
               
             
@@ -412,24 +412,12 @@
                 
               
 
-              <time title="创建时间：2019-05-29 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-29T00:00:00+08:00">2019-05-29</time>
+              <time title="创建时间：2019-08-26 00:00:00 / 修改时间：10:57:51" itemprop="dateCreated datePublished" datetime="2019-08-26T00:00:00+08:00">2019-08-26</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-24 21:38:40" itemprop="dateModified" datetime="2019-06-24T21:38:40+08:00">2019-06-24</time>
               
             
           </span>
@@ -446,7 +434,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a></span>
 
                 
                 
@@ -464,8 +452,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
             
-                <a href="/org/2019-05-29-2019-05-29-es-reindex-api.html#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-05-29-2019-05-29-es-reindex-api.html" itemprop="commentCount"></span>
+                <a href="/org/2019-08-26-2019-08-26-书摘-201906-07.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/org/2019-08-26-2019-08-26-书摘-201906-07.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -473,7 +461,7 @@
 
           
           
-            <span id="/org/2019-05-29-2019-05-29-es-reindex-api.html" class="leancloud_visitors" data-flag-title="ElasticSearch 同步数据">
+            <span id="/org/2019-08-26-2019-08-26-书摘-201906-07.html" class="leancloud_visitors" data-flag-title="书摘-201906-07">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -498,7 +486,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2k</span>
+                <span title="本文字数">2.9k</span>
               
 
               
@@ -512,7 +500,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 分钟</span>
+                <span title="阅读时长">3 分钟</span>
               
             </div>
           
@@ -533,24 +521,45 @@
 
       
         
-<div id="outline-container-orge0a572c" class="outline-2">
-<h2 id="orge0a572c">同步方法</h2>
-<div class="outline-text-2" id="text-orge0a572c">
-<ol class="org-ol">
-<li>通过curl调用 <b>ElasticSearch</b> 的reindex API，优点是简单易用，缺点是同步性能不够快</li>
-<li>通过JAVA API自己实现同步过程，可以实现单点50MBps的同步性能，备份数为1，基本耗光千兆网卡，且可多点同时同步多个不同索引</li>
-</ol>
+<div id="outline-container-org3a652c5" class="outline-2">
+<h2 id="org3a652c5">巨人的陨落 (肯·福莱特)</h2>
+<div class="outline-text-2" id="text-org3a652c5">
+<p>
+关于一战的小说，从各国各阶层人民的眼中去看一战的来龙去脉，给读者绘制了一副立体的过去的世界。
+七分实三分虚，作者对历史的把控能力游刃有余。
+那么多次和平的希望被命运无情地剥夺，无数的偶然酿成了灾难性的世界大战，令人难以置信。
+</p>
+
+<blockquote>
+<ul class="org-ul">
+<li>自由的美国人那里学习民主，从狡猾的英国人那里学习外交策略，从时尚的法国人那里学习高雅的生活艺术。</li>
+<li>在为妇女争取平等的战斗中，你不但要跟男人拼斗，有时还得跟女人厮杀。</li>
+</ul>
+</blockquote>
 </div>
 </div>
 
-<div id="outline-container-org44fdce2" class="outline-2">
-<h2 id="org44fdce2">reindex 注意事项</h2>
-<div class="outline-text-2" id="text-org44fdce2">
-<ol class="org-ol">
-<li>需要源索引中文档开启_source字段</li>
-<li>不会引用源索引的配置，如mapping，shard，replicas等，若有需要应该先创建并设置好目标索引后再调用</li>
-<li>从其它集群reindex数据的话，需要配置reindex.remote.whitelist，如果开启SSL，还需要配置证书等</li>
-</ol>
+<div id="outline-container-orgead9b74" class="outline-2">
+<h2 id="orgead9b74">反脆弱 (纳西姆•尼古拉斯•塔勒布)</h2>
+<div class="outline-text-2" id="text-orgead9b74">
+<blockquote>
+<ul class="org-ul">
+<li>教育会让聪明人变得稍微更聪明一些，但却会让傻瓜变得危险很多。</li>
+<li>科学需要你了解世界；商业需要你让别人误解世界。</li>
+<li>要理解禁欲主义给予人的自由，只要想想看：失去全部财富的痛苦远比失去一半财富要轻。</li>
+<li>现代社会给我们的双重惩罚是，既让我们衰老得更早，又让我们活得更长。</li>
+<li>你记得住自己发出去却没收到回复的邮件，却记不住自己收到了而没有回复的邮件。</li>
+<li>从古罗马的老加图开始，人们一直通过斥责下一代人的“浅薄”、赞扬上一辈人的“价值”来表现自己的成熟。</li>
+<li>年轻人的智慧跟老人的轻佻一样不讨人喜欢。</li>
+<li>神圣的东西都是不求回报的，凡俗的东西都是求回报的。</li>
+<li>历史上各种悲剧的源泉，无外乎混淆别人的“无条件”跟“有条件”。</li>
+<li>爱和幸福之间的区别在于，谈论爱的人通常正处于爱河之中，谈论幸福的人通常并不幸福。</li>
+<li>对于一般的书，阅读正文，忽略脚注；对于学术派的书，阅读脚注，忽略正文；对于商业方面的书，正文和脚注都可以忽略。</li>
+<li>弱者行动是为了满足自己的需求，强者行动是为了履行自己的义务。</li>
+<li>做一名哲学家意味着仅仅通过思考就能弄清楚事情是什么样的，是先验的；别人只能通过错误、危机、事故和崩溃来弄清楚事情是什么样的，是后验的。</li>
+<li>充满信息的现实世界是混乱的、随机的、复杂的，而我们对事物的直觉则是简单的——这两者之间并不匹配。结果是，我们的精神架构越来越跟不上我们所生活的世界。</li>
+</ul>
+</blockquote>
 
 <p>
 <a id="more"></a>
@@ -558,63 +567,55 @@
 </div>
 </div>
 
-<div id="outline-container-org1d8ef69" class="outline-2">
-<h2 id="org1d8ef69">reindex 接口</h2>
-<div class="outline-text-2" id="text-org1d8ef69">
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">POST _reindex?slices=5&amp;refresh&amp;wait_for_completion=false</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"source"</span>: &#123;</span><br><span class="line">    <span class="attr">"remote"</span>: &#123;</span><br><span class="line">      <span class="attr">"host"</span>: <span class="string">"http://otherhost:9200"</span>,</span><br><span class="line">      <span class="attr">"username"</span>: <span class="string">"user"</span>,</span><br><span class="line">      <span class="attr">"password"</span>: <span class="string">"pass"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"index"</span>: <span class="string">"old_index_name"</span>,</span><br><span class="line">    <span class="attr">"size"</span>: <span class="string">"10000"</span>,</span><br><span class="line">    <span class="attr">"query"</span>: &#123;</span><br><span class="line">      <span class="attr">"term"</span>: &#123;</span><br><span class="line">        <span class="attr">"field_name"</span>: <span class="string">"field_value"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"dest"</span>: &#123;</span><br><span class="line">    <span class="attr">"index"</span>: <span class="string">"new_index_name"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"script"</span>: &#123;</span><br><span class="line">    <span class="attr">"source"</span>: <span class="string">"ctx._source.tag = ctx._source.remove(\"flag\")"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol class="org-ol">
-<li>source.slices 可选项，默认值为1，设置为源索引shards个数，并发检索，可以达到最高效率</li>
-<li>source.wait_for_completion 可选项，默认为true，设置为false可以令reindex异步执行，大量数据的同步通常耗时较久</li>
-<li>source.remote 可选项，默认为空，表示只在本地做reindex，主要用于字段重命名，修复异常数据等，配置此项可用于集群间同步数据</li>
-<li>source.index 必须项，源索引名</li>
-<li>source.size 可选项，默认值为1000，一次获取的文档个数，视集群情况调整</li>
-<li>source.query 可选项，默认为空，即reindex源索引所有数据</li>
-<li>dest.index 必须项，目标索引名</li>
-<li>script.source 可选项，默认为空，主要用于数据修改，示例中将flag重命名为tag</li>
-</ol>
+<div id="outline-container-org18606ad" class="outline-2">
+<h2 id="org18606ad">随机生存的智慧 (纳西姆•尼古拉斯•塔勒布)</h2>
+<div class="outline-text-2" id="text-org18606ad">
+<p>
+关于反脆弱最厚的一本，也是内容最丰富的一本。
+太多反常理的思考，读一遍感觉消化不掉，有空应该再细嚼慢咽一次。
+虽然是21世纪的书，但是很多思想跟我国古人暗合。例如，顺其自然，知行合一。
+大道至简，人类把自己搞得越来越复杂，忽视了最基本的东西，将世界至于不断放大的风险之中而浑然不觉。
+</p>
 
 <blockquote>
-<p>
-script选项 可以完成很多实用的功能。
-比如说如下脚本，将以时间字段ts按月划分的索引testindex-yyyyMM切分成按天划分的索引testindex-yyyyMMdd，并将foo字段改名为bar
-</p>
+<ul class="org-ul">
+<li>当你寻求秩序，你得到的不过是表面的秩序；而当你拥抱随机性，你却能把握秩序、掌控局面。</li>
+<li>现代世界的技术性知识可能会不断地增加，但矛盾的是，它也会使事情变得更加不可预测。</li>
+<li>如果你看到欺诈而不揭露欺诈，那么你就是同谋。</li>
+<li>对傲慢者友好无异于对友好者傲慢，对任何邪恶行为宽容无异于纵容这种行为。</li>
+<li>人只有在以不折不扣的诚意评判世界、评判他人的时候……才能获得切切实实的自由……这不只是一个目的，而是一项义务。</li>
+<li>过度补偿机制往往隐藏在最不可能的地方。长途飞行后最好去健身房锻炼以消除疲劳，而不是坐下来休息。</li>
+<li>层层冗余正是自然生态系统集中管理风险的显著特征</li>
+<li>我们住在“金色”的监狱里。 这一“目标驱动”型态度深深地伤害了内在的自我。</li>
+<li>现代生活中充斥着原本可以避免的慢性应激损伤。</li>
+<li>一个系统内部的某些部分可能必须是脆弱的，这样才能使整个系统具有反脆弱性。或者有机体本身是脆弱的，但它遗传给新生命的基因编码却具有反脆弱性。</li>
+<li>进化最有趣的一面是，它是依赖反脆弱性实现的；它喜欢压力、随机性、不确定性和混乱——而个体生物则相对脆弱，基因库正是利用冲击来确保优胜劣汰，提高整体的适应力。</li>
+<li>毒物兴奋效应体现在生物个体从直接危害中受益，进化则发生在个体生物在外来伤害中灭亡，而将利益转给其他存活下来的有机体和未来的后代。</li>
+<li>如果“泰坦尼克”号没有遭遇那次众所周知的致命事故，我们将会不断地建造越来越大的远洋客轮，而下一次的灾难将是更大的悲剧。</li>
+<li>系统的反脆弱性是以牺牲个体为代价取得的</li>
+<li>没有波动，就没有稳定。</li>
+<li>拖延可以避免你犯错，因为它给予自然按自己的规律行事的机会，要知道，自然比科学家更不容易出错，这是一个令人尴尬的事实。研究“非理性”的心理学家和经济学家并没有意识到，在没有生命危险的情况下，人类有一种拖延的本能。如果看到狮子走进我的卧室或邻近的图书馆起火，我是绝不会拖延的。如果严重受伤，我也不会拖延就医。此时，我遵循的是非自然的职责和程序。</li>
+<li>很少有人知道，拖延是我们的自然防御本能，是让事情顺其自然地发展、行使其反脆弱性的本能；它源于某些生态或自然的智慧，结果也并不总是坏的。在生存层面上，这是我们的身体自然地反抗任何强加的桎梏和束缚的方式，这是我们的灵魂在与现代化中的普罗克拉斯提斯之床作斗争。</li>
+<li>。由于拖延源于我们的自然意志，传递了我们自身动力不足的信息，因此解决方案就是换个环境或者换份工作，让自己不要那么纠结或者压抑。很少有人可以领会这样的逻辑，人们应该过一种视拖延为有益工具的、基于自然风险进行决策的生活。</li>
+<li>事实上，人类是非常不擅长过滤信息的，特别是短期信息，而拖延则是帮助我们筛选信息的较好方式，它能避免我们由于冲动而轻信某个信息，</li>
+<li>在一个自然的环境中，压力源就是信息</li>
+<li>迈向反脆弱性的第一步就是减少不利因素，而不是增加有利因素；也就是说，通过降低自己暴露于负面“黑天鹅”事件的概率，让反脆弱性顺其自然地发挥作用。</li>
+<li>做好最坏的打算，最好的情况总能水到渠成</li>
+<li>理论其实是解决问题后的产物，但不能反过来说。</li>
+<li>我们不是为了生活而学习，只是为了学习而学习</li>
+<li>对于脆弱的事物来说，冲击带来的伤害会随着冲击强度的增加而以更快的速度增长（直到达到某一水平</li>
+<li>证伪总是比证实更容易找到依据</li>
+<li>在一般情况下，失败（和证伪）比成功和证实能带来更多信息</li>
+<li>相关人员无视一个矛盾的现实，即我们从未有过比现在更多的数据，但我们的预测能力却比以往任何时候都弱。更多的数据——如过马路时注意周围人眼睛的颜色——可能会让你无视路上的大货车。当你过马路时，你应该去掉数据，把注意力从其他任何东西转移到最根本的威胁上。正如保罗·瓦莱里曾经写道的：“人们得忽略多少东西才能让自己有效地行动。”</li>
+<li>有说服力和自信的学科，例如物理学科，往往很少使用统计数据支持本学科的论点，而政治学和经济学虽然从来没有产生过值得一提的东西，却充斥着复杂的统计和统计“证据”</li>
+<li>显而易见的决定（在错误面前是强韧的）不需要一个以上的原因。</li>
+<li>威尔斯、乔治·奥威尔在文学小说中所表达的，或者部分科学家或未来学家曾经说过的，但如今已经被人遗忘的一些对未来的叙述。值得注意的是，目前似乎主宰着世界的工具，如互联网，</li>
+<li>在政治领域，一个好的体制就是有助于社会淘汰坏人的体制，它不必考虑做什么事或者由谁执政</li>
+<li>只有时间颠扑不破的东西，才是属于我们永远需要的东西。</li>
+<li>该法典的目的不是进行回溯性惩罚，而是从一开始就设定反诱因，防止一个人在履行其职责的过程中伤害到别人，从而挽救他人的生命。</li>
+<li>商业世界的问题在于，它只能通过加法（肯定法），而不是减法（否定法）来运转</li>
+</ul>
 </blockquote>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Date date  = <span class="keyword">new</span> Date(<span class="number">1000</span> * Long.parseLong(ctx._source[<span class="string">'ts'</span>]));</span><br><span class="line">def sdf    = <span class="keyword">new</span> SimpleDateFormat(<span class="string">'yyyyMMdd'</span>);</span><br><span class="line">sdf.setTimeZone(TimeZone.getTimeZone(<span class="string">"GMT+0"</span>));</span><br><span class="line">def day    = sdf.format(date);</span><br><span class="line">ctx._index = <span class="string">'testindex-'</span> + day;</span><br><span class="line"><span class="keyword">if</span> (ctx._source.foo != <span class="keyword">null</span>) &#123;ctx._source.bar=ctx._source.remove(<span class="string">'foo'</span>)&#125;</span><br></pre></td></tr></table></figure>
-</div>
-</div>
-
-<div id="outline-container-org8294dee" class="outline-2">
-<h2 id="org8294dee">任务进度</h2>
-<div class="outline-text-2" id="text-org8294dee">
-</div>
-<div id="outline-container-orgd7b7632" class="outline-3">
-<h3 id="orgd7b7632">进度查询</h3>
-<div class="outline-text-3" id="text-orgd7b7632">
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET _tasks?detailed=true&amp;actions=*reindex</span><br></pre></td></tr></table></figure>
-</div>
-</div>
-<div id="outline-container-org4ed5c0a" class="outline-3">
-<h3 id="org4ed5c0a">取消任务</h3>
-<div class="outline-text-3" id="text-org4ed5c0a">
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST _tasks/task_id/_cancel</span><br></pre></td></tr></table></figure>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org5d7fba5" class="outline-2">
-<h2 id="org5d7fba5">DIY同步过程</h2>
-<div class="outline-text-2" id="text-org5d7fba5">
-<ol class="org-ol">
-<li>备份数据</li>
-<li>删除数据(如果同步的是整个索引的数据，只需要把索引从alias中移除即可完成备份与删除)</li>
-<li>从远端拉取数据</li>
-<li>按源索引的shards数并发设置SliceBuilder</li>
-<li>SliceBuilder调用addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)有奇效</li>
-<li>线程中通过scroll接口分页获取一批数据</li>
-<li>获取的数据通过BulkProccessor异步写入本地集群，设置最新分页id，重复6</li>
-<li>最终等待BulkProccessor返回</li>
-</ol>
 </div>
 </div>
 
@@ -634,12 +635,12 @@ script选项 可以完成很多实用的功能。
 
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/org/2019-05-29-2019-05-29-es-reindex-api.html">ElasticSearch 同步数据</a></p>
+  <p><span>本文标题:</span><a href="/org/2019-08-26-2019-08-26-书摘-201906-07.html">书摘-201906-07</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Matthew Wong 的个人博客">Matthew Wong</a></p>
-  <p><span>发布时间:</span>2019年05月29日 - 00:05</p>
-  <p><span>最后更新:</span>2019年06月24日 - 21:06</p>
-  <p><span>原始链接:</span><a href="/org/2019-05-29-2019-05-29-es-reindex-api.html" title="ElasticSearch 同步数据">http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-05-29-2019-05-29-es-reindex-api.html" aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年08月26日 - 00:08</p>
+  <p><span>最后更新:</span>2019年08月26日 - 10:08</p>
+  <p><span>原始链接:</span><a href="/org/2019-08-26-2019-08-26-书摘-201906-07.html" title="书摘-201906-07">http://ontheroad.nosace.cc/org/2019-08-26-2019-08-26-书摘-201906-07.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://ontheroad.nosace.cc/org/2019-08-26-2019-08-26-书摘-201906-07.html" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -685,7 +686,9 @@ script选项 可以完成很多实用的功能。
       
         <div class="post-tags">
           
-            <a href="/tags/ElasticSearch/" rel="tag"><i class="fa fa-tag"></i> ElasticSearch</a>
+            <a href="/tags/小说/" rel="tag"><i class="fa fa-tag"></i> 小说</a>
+          
+            <a href="/tags/思想/" rel="tag"><i class="fa fa-tag"></i> 思想</a>
           
         </div>
       
@@ -698,8 +701,8 @@ script选项 可以完成很多实用的功能。
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/org/2019-04-02-2019-04-02-书摘-201902-03.html" rel="next" title="书摘-201902-03">
-                <i class="fa fa-chevron-left"></i> 书摘-201902-03
+              <a href="/org/2019-06-24-2019-06-24-书摘-201904-05.html" rel="next" title="书摘-201904-05">
+                <i class="fa fa-chevron-left"></i> 书摘-201904-05
               </a>
             
           </div>
@@ -707,10 +710,6 @@ script选项 可以完成很多实用的功能。
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/org/2019-05-29-2019-05-29-es-reindex-api_L3340_Aug-19-140429-2019_Conflict.html" rel="prev" title="ElasticSearch 同步数据">
-                ElasticSearch 同步数据 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -904,7 +903,7 @@ script选项 可以完成很多实用的功能。
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#orge0a572c"><span class="nav-number">1.</span> <span class="nav-text">同步方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org44fdce2"><span class="nav-number">2.</span> <span class="nav-text">reindex 注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org1d8ef69"><span class="nav-number">3.</span> <span class="nav-text">reindex 接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org8294dee"><span class="nav-number">4.</span> <span class="nav-text">任务进度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#orgd7b7632"><span class="nav-number">4.1.</span> <span class="nav-text">进度查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#org4ed5c0a"><span class="nav-number">4.2.</span> <span class="nav-text">取消任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org5d7fba5"><span class="nav-number">5.</span> <span class="nav-text">DIY同步过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org3a652c5"><span class="nav-number">1.</span> <span class="nav-text">巨人的陨落 (肯·福莱特)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgead9b74"><span class="nav-number">2.</span> <span class="nav-text">反脆弱 (纳西姆•尼古拉斯•塔勒布)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org18606ad"><span class="nav-number">3.</span> <span class="nav-text">随机生存的智慧 (纳西姆•尼古拉斯•塔勒布)</span></a></li></ol></div>
             
 
           </div>
